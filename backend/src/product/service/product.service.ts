@@ -40,6 +40,16 @@ export class ProductService {
     });
   }
 
+  async findAllOwnProducts(userId: number): Promise<GetProductInfo[]> {
+    return this.prisma.product.findMany({
+      where: { userId },
+      include: {
+        user: true,
+        categories: true, 
+      },
+    });
+  }
+
   async findOne(id: number): Promise<GetProductInfo> {
     const product = await this.prisma.product.findUnique({
       where: { id },

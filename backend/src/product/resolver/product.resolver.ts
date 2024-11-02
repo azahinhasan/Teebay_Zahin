@@ -6,11 +6,13 @@ import {
   UpdateProductDto,
 } from '../dto/product.mutation.dto';
 import { GetProductInfo } from '../dto/product.query.dto';
-import { UseGuards,UseInterceptors } from '@nestjs/common';
+import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '../../common/guards/jwt.middleware';
+import {FormatInterceptor} from '../../common/interceptor/formate-response.interceptor';
 
 @Resolver(() => Product)
 @UseGuards(AuthGuard)
+@UseInterceptors(FormatInterceptor)
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
@@ -22,6 +24,14 @@ export class ProductResolver {
   @Query(() => Product)
   async getProduct(@Args('id') id: number): Promise<GetProductInfo> {
     return this.productService.findOne(id);
+  }
+
+  @Query(() => [Product])
+  async getAllOwnProducts(
+    @Context() context: any,
+    @Args('id') id: number,
+  ): Promise<GetProductInfo[]> {
+    return this.productService.findAllOwnProducts(context.req.user_id);
   }
 
   /* ------------------------------------------mutation--------------------------------------------------------- */

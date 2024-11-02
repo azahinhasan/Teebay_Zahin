@@ -27,4 +27,10 @@ export class Transaction {
 
   @Field(() => Product)
   product: Product;
+
+  @Field({ nullable: true })
+  rentalDateStart?: string;
+
+  @Field({ nullable: true })
+  rentalDateEnd?: string;
 }
