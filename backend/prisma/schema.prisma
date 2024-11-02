@@ -8,47 +8,50 @@ generator client {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  name       String
-  email      String       @unique
-  password   String 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  transactions Transaction[]
-  products    Product[]
+  id            Int          @id @default(autoincrement())
+  name          String
+  email         String       @unique
+  password      String 
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  transactions  Transaction[]
+  products      Product[]
 }
 
 model Product {
-  id           Int          @id @default(autoincrement())
+  id           Int                @id @default(autoincrement())
   userId       Int
   name         String
   description  String
   price        Float
   rentPrice    Float
-  rentDuration RentDurationTypes @default(perHour)
+  totalViews   Int @default(0)
+  rentDuration RentDurationTypes  @default(perHour)
   status       CurrentStatusTypes @default(available)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  user         User         @relation(fields: [userId], references: [id])
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  user         User               @relation(fields: [userId], references: [id])
   transactions Transaction[]
   categories   Category[]
+
 }
 
 model Category {
-  id       Int          @id @default(autoincrement())
-  name     String
+  id        Int          @id @default(autoincrement())
+  name      String
   products  Product[]
 }
 
 model Transaction {
-  id             Int       @id @default(autoincrement())
-  userId         Int
-  productId      Int
-  transactionType TransactionActionTypes?
-  transactionDate DateTime  @default(now())
-  status         String
-  user           User       @relation(fields: [userId], references: [id])
-  product        Product    @relation(fields: [productId], references: [id])
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  productId         Int
+  transactionType   TransactionActionTypes?
+  transactionDate   DateTime  @default(now())
+  rentalDateStart   DateTime? //if action_type = borrowed
+  rentalDateEnd     DateTime?   //if action_type = borrowed
+  user              User       @relation(fields: [userId], references: [id])
+  product           Product    @relation(fields: [productId], references: [id])
 }
 
 enum TransactionActionTypes {  
