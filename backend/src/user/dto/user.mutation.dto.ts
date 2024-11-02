@@ -1,7 +1,8 @@
 import { InputType, Field } from '@nestjs/graphql';
+import { BaseResponse  } from '../../common/dto/base-response.dto';
 
 @InputType()
-export class CreateUserInput {
+export class CreateUserInput extends BaseResponse {
   @Field()
   name: string;
 
@@ -13,7 +14,7 @@ export class CreateUserInput {
 }
 
 @InputType()
-export class UpdateUserInput {
+export class UpdateUserInput extends BaseResponse {
   @Field()
   id: number;
 

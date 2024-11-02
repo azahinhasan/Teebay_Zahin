@@ -1,9 +1,11 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from '../service/auth.service';
 import { LoginResponse } from '../dto/login-response.dto'; 
-import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../../common/jwt.middleware';
+import { UseGuards,UseInterceptors } from '@nestjs/common';
+import { AuthGuard } from '../../common/guards/jwt.middleware';
+import {FormatInterceptor} from '../../common/interceptor/formate-response.interceptor';
 @Resolver("auth")
+@UseInterceptors(FormatInterceptor)
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 

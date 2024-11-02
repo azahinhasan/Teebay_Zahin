@@ -1,19 +1,20 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
+import { BaseResponse  } from '../../common/dto/base-response.dto';
 
 @InputType()
-export class FindUserByIdInput {
+export class FindUserByIdInput extends BaseResponse {
   @Field(() => Int)
   id: number;
 }
 
 @InputType()
-export class FindUserByEmailInput {
+export class FindUserByEmailInput extends BaseResponse {
   @Field()
   email: string;
 }
 
 
-export class GetUserInfo {
+export class GetUserInfo extends BaseResponse {
   @Field()
   id: number;
 
@@ -25,4 +26,5 @@ export class GetUserInfo {
 
   @Field({ nullable: true })
   password?: string;
+  
 }

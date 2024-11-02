@@ -1,7 +1,8 @@
 import { ObjectType, Field } from '@nestjs/graphql';
+import { BaseResponse  } from '../../common/dto/base-response.dto';
 
 @ObjectType()
-export class LoginResponse {
-  @Field()
-  token: string; // This field corresponds to the access token returned
+export class LoginResponse extends BaseResponse  {
+  @Field({ nullable: true })
+  token: string;
 }

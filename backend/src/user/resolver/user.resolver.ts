@@ -1,13 +1,15 @@
 // user.resolver.ts
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from '../service/user.service';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards,UseInterceptors } from '@nestjs/common';
 import { User } from '../model/user.model';
 import { CreateUserInput, UpdateUserInput } from '../dto/user.mutation.dto';
-import { FindUserByIdInput } from '../dto/user.query.dto';
-import { GetUserInfo } from '../dto/user.query.dto';
-import { AuthGuard } from '../../common/jwt.middleware';
+import { FindUserByIdInput,GetUserInfo } from '../dto/user.query.dto';
+import { AuthGuard } from '../../common/guards/jwt.middleware';
+import {FormatInterceptor} from '../../common/interceptor/formate-response.interceptor';
+
 @Resolver('user')
+@UseInterceptors(FormatInterceptor)
 @UseGuards(AuthGuard)
 export class UserResolver {
   constructor(private userService: UserService) {}
