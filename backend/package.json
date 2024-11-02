@@ -17,13 +17,16 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "prisma:migrate": "prisma migrate dev && ts-node prisma/seed.ts",
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@nestjs/apollo": "^12.2.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/graphql": "^12.2.1",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.21.1",
     "apollo-server-express": "^3.13.0",

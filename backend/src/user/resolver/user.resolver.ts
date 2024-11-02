@@ -1,11 +1,14 @@
 // user.resolver.ts
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from '../service/user.service';
+import { UseGuards } from '@nestjs/common';
 import { User } from '../model/user.model';
 import { CreateUserInput, UpdateUserInput } from '../dto/user.mutation.dto';
 import { FindUserByIdInput } from '../dto/user.query.dto';
-import {GetUserInfo} from '../dto/user.query.dto';
-@Resolver(() => User)
+import { GetUserInfo } from '../dto/user.query.dto';
+import { AuthGuard } from '../../common/jwt.middleware';
+@Resolver('user')
+@UseGuards(AuthGuard)
 export class UserResolver {
   constructor(private userService: UserService) {}
 
@@ -21,7 +24,9 @@ export class UserResolver {
 
   /* ------------------------------------------mutation--------------------------------------------------------- */
   @Mutation(() => User)
-  async createUser(@Args('input') input: CreateUserInput): Promise<GetUserInfo> {
+  async createUser(
+    @Args('input') input: CreateUserInput,
+  ): Promise<GetUserInfo> {
     return this.userService.createUser(input);
   }
 

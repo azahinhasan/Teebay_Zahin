@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/service/prisma.service'; // Import your Prisma service
+import { PrismaService } from '../../prisma/service/prisma.service';
 import { CreateUserInput, UpdateUserInput } from '../dto/user.mutation.dto';
 import * as bcrypt from 'bcrypt';
 import {GetUserInfo} from '../dto/user.query.dto'
