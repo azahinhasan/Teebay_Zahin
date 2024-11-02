@@ -95,4 +95,19 @@ export class ProductService {
     await this.prisma.product.delete({ where: { id } });
     return true;
   }
+
+  async incrementViewCount(id: number): Promise<GetProductInfo> {
+    const product = await this.prisma.product.findUnique({ where: { id } });
+
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    }
+
+    const updatedProduct = await this.prisma.product.update({
+      where: { id },
+      data: { totalViews: { increment: 1 } },
+    });
+
+    return updatedProduct ;
+  }
 }

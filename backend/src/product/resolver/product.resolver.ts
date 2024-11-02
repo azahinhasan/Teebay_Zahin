@@ -54,4 +54,9 @@ export class ProductResolver {
   async deleteProduct(@Args('id') id: number): Promise<boolean> {
     return this.productService.remove(id);
   }
+
+  @Mutation(() => GetProductInfo)
+  async viewProduct(@Args('id') id: number): Promise<GetProductInfo> {
+    return this.productService.incrementViewCount(id);
+  }
 }

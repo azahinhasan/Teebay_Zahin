@@ -21,6 +21,9 @@ export class GetProductInfo extends BaseResponse {
   rentPrice?: number;
 
   @Field({ nullable: true })
+  totalViews?: number;
+
+  @Field({ nullable: true })
   rentDuration?: string;
 
   @Field({ nullable: true })
