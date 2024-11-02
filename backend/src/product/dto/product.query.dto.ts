@@ -1,7 +1,9 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
+import { InputType,ObjectType, Field, Int } from '@nestjs/graphql';
 import { BaseResponse } from '../../common/dto/base-response.dto';
 import {GetUserInfo} from '../../user/dto/user.query.dto'
-import {GetCategoryInfo} from '../../category/dto/calegory.query.dto'
+import {GetCategoryInfo} from '../../category/dto/category.query.dto'
+
+@ObjectType()
 export class GetProductInfo extends BaseResponse {
   @Field()
   id: number;

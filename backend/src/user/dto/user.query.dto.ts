@@ -1,4 +1,4 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
+import { InputType,ObjectType, Field, Int } from '@nestjs/graphql';
 import { BaseResponse  } from '../../common/dto/base-response.dto';
 
 @InputType()
@@ -13,7 +13,7 @@ export class FindUserByEmailInput extends BaseResponse {
   email: string;
 }
 
-
+@ObjectType()
 export class GetUserInfo extends BaseResponse {
   @Field()
   id: number;

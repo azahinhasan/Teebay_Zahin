@@ -72,12 +72,12 @@ export class UpdateProductDto {
 
   @IsOptional()
   @IsNumber()
-  @Field(() => Float, { nullable: true }) // Specify Float for price
+  @Field(() => Float, { nullable: true }) 
   price?: number;
 
   @IsOptional()
   @IsNumber()
-  @Field(() => Float, { nullable: true }) // Specify Float for rentPrice
+  @Field(() => Float, { nullable: true })
   rentPrice?: number;
 
   @IsOptional()
