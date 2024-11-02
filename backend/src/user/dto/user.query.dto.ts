@@ -15,16 +15,20 @@ export class FindUserByEmailInput extends BaseResponse {
 
 @ObjectType()
 export class GetUserInfo extends BaseResponse {
-  @Field()
+  @Field({ nullable: true })
   id: number;
 
   @Field({ nullable: true })
-  name?: string;
+  name: string;
 
   @Field({ nullable: true })
-  email?: string;
+  email: string;
 
-  @Field({ nullable: true })
-  password?: string;
-  
+}
+
+
+@ObjectType()
+export class GetAllUserInfo extends BaseResponse {
+  @Field(() => [GetUserInfo], { nullable: true }) 
+  list: GetUserInfo[]; 
 }

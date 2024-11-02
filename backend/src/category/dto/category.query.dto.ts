@@ -13,3 +13,10 @@ export class GetCategoryInfo extends BaseResponse {
   @Field(() => [GetProductInfo], { nullable: true })
   products?: GetProductInfo[];
 }
+
+
+@ObjectType() 
+export class GetAllCategoryInfo extends BaseResponse {
+  @Field(() => [GetCategoryInfo], { nullable: true }) 
+  list: GetCategoryInfo[];
+}

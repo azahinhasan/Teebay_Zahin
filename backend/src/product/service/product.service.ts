@@ -5,7 +5,7 @@ import {
   UpdateProductDto,
 } from '../dto/product.mutation.dto';
 import { Product } from '@prisma/client';
-import { GetProductInfo } from '../dto/product.query.dto';
+import { GetProductInfo, GetProductsInfo } from '../dto/product.query.dto';
 
 @Injectable()
 export class ProductService {
@@ -31,23 +31,26 @@ export class ProductService {
     });
   }
 
-  async findAll(): Promise<GetProductInfo[]> {
-    return this.prisma.product.findMany({
+  async findAll(): Promise<GetProductsInfo> {
+    const data = await this.prisma.product.findMany({
+      where: { status: 'available' },
       include: {
         user: true,
-        categories: true, 
+        categories: true,
       },
     });
+    return { list: data };
   }
 
-  async findAllOwnProducts(userId: number): Promise<GetProductInfo[]> {
-    return this.prisma.product.findMany({
+  async findAllOwnProducts(userId: number): Promise<GetProductsInfo> {
+    const data = await this.prisma.product.findMany({
       where: { userId },
       include: {
         user: true,
-        categories: true, 
+        categories: true,
       },
     });
+    return { list: data };
   }
 
   async findOne(id: number): Promise<GetProductInfo> {
@@ -55,7 +58,7 @@ export class ProductService {
       where: { id },
       include: {
         user: true,
-        categories: true, 
+        categories: true,
       },
     });
     if (!product) {

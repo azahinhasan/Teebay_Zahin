@@ -9,7 +9,7 @@ import {FormatInterceptor} from '../../common/interceptor/formate-response.inter
 
 @Resolver(() => Transaction)
 @UseGuards(AuthGuard)
-// @UseInterceptors(FormatInterceptor)
+@UseInterceptors(FormatInterceptor)
 export class TransactionResolver {
   constructor(private readonly transactionService: TransactionService) {}
 
@@ -18,7 +18,8 @@ export class TransactionResolver {
     return this.transactionService.getUserTransactions(context.req.user_id);
   }
 
-  @Mutation(() => Transaction)
+  /* ------------------------------------------mutation--------------------------------------------------------- */
+  @Mutation(() => GetTransactionInfo)
   async buyProduct(
     @Context() context: any,
     @Args('data') data: BuyProductDto,
@@ -26,7 +27,7 @@ export class TransactionResolver {
     return this.transactionService.buyProduct(context.req.user_id, data);
   }
 
-  @Mutation(() => Transaction)
+  @Mutation(() => GetTransactionInfo)
   async rentProduct(
     @Context() context: any,
     @Args('data') data: RentProductDto,

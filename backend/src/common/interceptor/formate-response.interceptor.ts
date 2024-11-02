@@ -23,13 +23,13 @@ export class FormatInterceptor implements NestInterceptor {
         };
 
         if (Array.isArray(data)) {
-          return data.map((item) => formatData(item));
+          return data.map(formatData); 
         } else {
           return formatData(data);
         }
       }),
       catchError((error) => {
-        const statusCode = error.extensions?.code || '400';
+        const statusCode = error.extensions?.code || '500'; 
         const formattedError = {
           success: false,
           message: error.message || 'Internal Server Error',

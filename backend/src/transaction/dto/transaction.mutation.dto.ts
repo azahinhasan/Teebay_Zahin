@@ -8,13 +8,13 @@ export enum TransactionActionTypes {
 }
 
 @InputType()
-export class BuyProductDto extends BaseResponse {
+export class BuyProductDto {
   @Field(() => Int)
   productId: number;
 }
 
 @InputType()
-export class RentProductDto extends BaseResponse {
+export class RentProductDto {
   @Field(() => Int)
   productId: number;
 

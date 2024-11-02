@@ -32,3 +32,9 @@ export class GetProductInfo extends BaseResponse {
   @Field(() => [GetCategoryInfo], { nullable: true }) 
   categories?: GetCategoryInfo[]; 
 }
+
+@ObjectType()
+export class GetProductsInfo extends BaseResponse {
+  @Field(() => [GetProductInfo], { nullable: true }) 
+  list: GetProductInfo[]; 
+}

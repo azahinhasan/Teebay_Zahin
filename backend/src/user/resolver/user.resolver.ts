@@ -4,7 +4,7 @@ import { UserService } from '../service/user.service';
 import { UseGuards,UseInterceptors } from '@nestjs/common';
 import { User } from '../model/user.model';
 import { CreateUserInput, UpdateUserInput } from '../dto/user.mutation.dto';
-import { FindUserByIdInput,GetUserInfo } from '../dto/user.query.dto';
+import { FindUserByIdInput,GetUserInfo,GetAllUserInfo } from '../dto/user.query.dto';
 import { AuthGuard } from '../../common/guards/jwt.middleware';
 import {FormatInterceptor} from '../../common/interceptor/formate-response.interceptor';
 
@@ -14,8 +14,8 @@ import {FormatInterceptor} from '../../common/interceptor/formate-response.inter
 export class UserResolver {
   constructor(private userService: UserService) {}
 
-  @Query(() => [User])
-  async findAllUsers() {
+  @Query(() => GetAllUserInfo)
+  async findAllUsers() : Promise<GetAllUserInfo> {
     return this.userService.findAllUsers();
   }
 
@@ -25,20 +25,20 @@ export class UserResolver {
   }
 
   /* ------------------------------------------mutation--------------------------------------------------------- */
-  @Mutation(() => User)
+  @Mutation(() => GetUserInfo)
   async createUser(
     @Args('input') input: CreateUserInput,
   ): Promise<GetUserInfo> {
     return this.userService.createUser(input);
   }
 
-  @Mutation(() => User)
-  async updateUser(@Args('input') input: UpdateUserInput) {
+  @Mutation(() => GetUserInfo)
+  async updateUser(@Args('input') input: UpdateUserInput): Promise<GetUserInfo> {
     return this.userService.updateUser(input);
   }
 
-  @Mutation(() => User)
-  async deleteUser(@Args('id') id: number) {
+  @Mutation(() => GetUserInfo)
+  async deleteUser(@Args('id') id: number): Promise<GetUserInfo> {
     return this.userService.deleteUser(id);
   }
 }
