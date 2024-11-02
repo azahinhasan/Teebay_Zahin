@@ -6,6 +6,9 @@ import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ProductModule } from './product/product.module';
+import { CategoryModule } from './category/category.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     AuthModule,
     UserModule,
     PrismaModule,
+    ProductModule,
+    CategoryModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
