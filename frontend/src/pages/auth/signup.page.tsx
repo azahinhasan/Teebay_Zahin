@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { CREATE_USER } from "../../graphql/mutations/userMutations";
+import { CREATE_USER } from "../../graphql/mutations/user.mutations";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../../context/snack-bar.context";
 

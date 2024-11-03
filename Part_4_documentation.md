@@ -280,7 +280,6 @@ query GetUserTransactions {
       transactionDate
       rentalDateStart
       rentalDateEnd
-      status
       transactionType
       user {
         id
@@ -292,6 +291,7 @@ query GetUserTransactions {
         name
         price
         rentPrice
+        description
       }
     }
     lent {
@@ -299,7 +299,6 @@ query GetUserTransactions {
       transactionDate
       rentalDateStart
       rentalDateEnd
-      status
       transactionType
       user {
         id
@@ -311,6 +310,7 @@ query GetUserTransactions {
         name
         price
         rentPrice
+        description
       }
     }
     sold {
@@ -318,7 +318,6 @@ query GetUserTransactions {
       transactionDate
       rentalDateStart
       rentalDateEnd
-      status
       transactionType
       user {
         id
@@ -330,6 +329,7 @@ query GetUserTransactions {
         name
         price
         rentPrice
+        description
       }
     }
     bought {
@@ -337,7 +337,6 @@ query GetUserTransactions {
       transactionDate
       rentalDateStart
       rentalDateEnd
-      status
       transactionType
       user {
         id

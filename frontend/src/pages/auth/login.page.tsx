@@ -11,7 +11,7 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Cookies from "js-cookie";
-import { LOGIN_MUTATION } from "../../graphql/mutations/authMutations";
+import { LOGIN_MUTATION } from "../../graphql/mutations/auth.mutations";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../../context/snack-bar.context";
 

@@ -4,6 +4,7 @@ import Login from "./auth/login.page";
 import SignUp from "./auth/signup.page";
 import Cookies from "js-cookie";
 import AllProductsPage from "./product/allProducts.pages";
+import MyTransactions from "./transaction/myTransactions"
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   return Cookies.get("token") ? children : <Navigate to="/login" />;
@@ -17,6 +18,7 @@ const routesConfig = [
   { path: "/login", element: <Login />, isProtected: false },
   { path: "/signup", element: <SignUp />, isProtected: false },
   { path: "/home", element: <AllProductsPage />, isProtected: true },
+  { path: "/my-transactions", element: <MyTransactions />, isProtected: true },
 ];
 
 const RoutesHandler = () => {
