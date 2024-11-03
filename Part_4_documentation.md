@@ -6,7 +6,7 @@
 
 # GraphQL Mutation: Login
 mutation Login {
-  login(username: "johndoe@example.com", password: "securePassword123") {
+  login(email: "johndoe@example.com", password: "securePassword123") {
     success
     message
     token

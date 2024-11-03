@@ -13,11 +13,11 @@ export class AuthService {
   ) {}
 
   async login(
-    username: string,
+    email: string,
     password: string,
   ): Promise<LoginResponse> {
     const user = await this.prisma.user.findUnique({
-      where: { email: username },
+      where: { email },
     });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new Error('Invalid credentials');

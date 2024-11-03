@@ -10,16 +10,17 @@ import {FormatInterceptor} from '../../common/interceptor/formate-response.inter
 
 @Resolver('user')
 @UseInterceptors(FormatInterceptor)
-@UseGuards(AuthGuard)
 export class UserResolver {
   constructor(private userService: UserService) {}
 
   @Query(() => GetAllUserInfo)
+  @UseGuards(AuthGuard)
   async findAllUsers() : Promise<GetAllUserInfo> {
     return this.userService.findAllUsers();
   }
 
   @Query(() => GetUserInfo)
+  @UseGuards(AuthGuard)
   async findUserById(@Args('input') input: FindUserByIdInput) {
     return this.userService.findUserById(input.id);
   }
@@ -33,11 +34,13 @@ export class UserResolver {
   }
 
   @Mutation(() => GetUserInfo)
+  @UseGuards(AuthGuard)
   async updateUser(@Args('input') input: UpdateUserInput): Promise<GetUserInfo> {
     return this.userService.updateUser(input);
   }
 
   @Mutation(() => GetUserInfo)
+  @UseGuards(AuthGuard)
   async deleteUser(@Args('id') id: number): Promise<GetUserInfo> {
     return this.userService.deleteUser(id);
   }

@@ -9,7 +9,7 @@ export class AuthResolver {
   constructor(private authService: AuthService) {}
 
   @Mutation(() => LoginResponse) // Update to return LoginResponse type
-  async login(@Args('username') username: string, @Args('password') password: string): Promise<LoginResponse> {
-    return this.authService.login(username, password);
+  async login(@Args('email') email: string, @Args('password') password: string): Promise<LoginResponse> {
+    return this.authService.login(email, password);
   }
 }
