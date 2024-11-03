@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+ import NavBar from "../components/navBar";
 import Login from "./auth/login.page";
 import SignUp from "./auth/signup.page";
 import Cookies from "js-cookie";
@@ -21,6 +22,9 @@ const routesConfig = [
 const RoutesHandler = () => {
   return (
     <BrowserRouter>
+      <ProtectedRoute>
+        <NavBar />
+      </ProtectedRoute>
 
       <Routes>
         {routesConfig.map(({ path, element, isProtected }) => (
