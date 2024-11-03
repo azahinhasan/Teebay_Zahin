@@ -18,9 +18,6 @@ export class GetTransactionInfo extends BaseResponse {
   rentalDateEnd?: Date;
 
   @Field({ nullable: true })
-  status?: string;
-
-  @Field({ nullable: true })
   transactionType?: string;
 
   @Field({ nullable: true })

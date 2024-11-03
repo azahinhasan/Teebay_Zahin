@@ -51,7 +51,7 @@ export class ProductResolver {
   }
 
   @Mutation(() => GetProductInfo)
-  async deleteProduct(@Args('id') id: number): Promise<boolean> {
+  async deleteProduct(@Args('id') id: number): Promise<GetProductInfo> {
     return this.productService.remove(id);
   }
 

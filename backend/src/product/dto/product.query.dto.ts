@@ -6,7 +6,7 @@ import {GetCategoryInfo} from '../../category/dto/category.query.dto'
 @ObjectType()
 export class GetProductInfo extends BaseResponse {
   @Field()
-  id: number;
+  id?: number;
 
   @Field({ nullable: true })
   name?: string;

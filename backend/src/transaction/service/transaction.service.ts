@@ -27,6 +27,9 @@ export class TransactionService {
         productId: data.productId,
         transactionType: 'bought',
       },
+      include: {
+        product: true,
+      },
     });
   }
 
@@ -50,6 +53,9 @@ export class TransactionService {
         transactionType: 'borrowed',
         rentalDateStart: data.rentalDateStart,
         rentalDateEnd: data.rentalDateEnd
+      },
+      include: {
+        product: true,
       },
     });
   }

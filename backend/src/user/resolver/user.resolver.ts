@@ -19,7 +19,7 @@ export class UserResolver {
     return this.userService.findAllUsers();
   }
 
-  @Query(() => User)
+  @Query(() => GetUserInfo)
   async findUserById(@Args('input') input: FindUserByIdInput) {
     return this.userService.findUserById(input.id);
   }

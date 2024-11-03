@@ -70,10 +70,10 @@ export class ProductService {
   async update(id: number, data: UpdateProductDto): Promise<GetProductInfo> {
     const { categoryIds, ...otherData } = data;
 
-    const findProduct = await this.findOne(id);
-    if (!findProduct) {
-      throw new NotFoundException('Product not found');
-    }
+    await this.findOne(id); //checking product exists or not
+    // if (!findProduct) {
+    //   throw new NotFoundException('Product not found');
+    // }
 
     return this.prisma.product.update({
       where: { id },
@@ -90,10 +90,9 @@ export class ProductService {
     });
   }
 
-  async remove(id: number): Promise<boolean> {
+  async remove(id: number): Promise<GetProductInfo> {
     await this.findOne(id);
-    await this.prisma.product.delete({ where: { id } });
-    return true;
+    return this.prisma.product.delete({ where: { id } });
   }
 
   async incrementViewCount(id: number): Promise<GetProductInfo> {
