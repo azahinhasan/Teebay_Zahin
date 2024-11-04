@@ -30,6 +30,9 @@ export class GetProductInfo extends BaseResponse {
   status?: string;
 
   @Field({ nullable: true })
+  userId?: number;
+
+  @Field({ nullable: true })
   user?: GetUserInfo;
 
   @Field(() => [GetCategoryInfo], { nullable: true }) 

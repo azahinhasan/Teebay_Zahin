@@ -31,9 +31,9 @@ export class ProductService {
     });
   }
 
-  async findAll(): Promise<GetProductsInfo> {
+  async findAll(userId: number): Promise<GetProductsInfo> {
     const data = await this.prisma.product.findMany({
-      where: { status: 'available' },
+      where: { status: 'available', userId: { not: userId } },
       include: {
         user: true,
         categories: true,
@@ -53,9 +53,16 @@ export class ProductService {
     return { list: data };
   }
 
-  async findOne(id: number): Promise<GetProductInfo> {
+  async findOne(
+    userId: number,
+    id: number,
+    isOwnProductCheck: boolean=false,
+  ): Promise<GetProductInfo> {
+    const temp = isOwnProductCheck
+      ? { userId: userId }
+      : { userId: { not: userId } };
     const product = await this.prisma.product.findUnique({
-      where: { id },
+      where: { id, ...temp },
       include: {
         user: true,
         categories: true,
@@ -68,13 +75,17 @@ export class ProductService {
     return product;
   }
 
-  async update(id: number, data: UpdateProductDto): Promise<GetProductInfo> {
+  async update(
+    userId: number,
+    id: number,
+    data: UpdateProductDto,
+  ): Promise<GetProductInfo> {
     const { categoryIds, ...otherData } = data;
 
-    await this.findOne(id); //checking product exists or not
-    // if (!findProduct) {
-    //   throw new NotFoundException('Product not found');
-    // }
+    const product = await this.findOne(userId, id,true);
+    if (product.status !== 'available' || product.userId !== userId) {
+      throw new NotFoundException('Product not available for updating');
+    }
 
     return this.prisma.product.update({
       where: { id },
@@ -91,8 +102,15 @@ export class ProductService {
     });
   }
 
-  async remove(id: number): Promise<GetProductInfo> {
-    await this.findOne(id);
+  async remove(userId: number, id: number): Promise<GetProductInfo> {
+    const product = await this.findOne(userId, id, true);
+    const transaction = await this.prisma.transaction.findFirst({
+      where: { id },
+    });
+    if (transaction) {
+      //only owner can remove products and can't remove products in if it has any transaction history
+      throw new NotFoundException('Product not available for deleting');
+    }
     return this.prisma.product.delete({ where: { id } });
   }
 
@@ -108,6 +126,6 @@ export class ProductService {
       data: { totalViews: { increment: 1 } },
     });
 
-    return updatedProduct ;
+    return updatedProduct;
   }
 }
