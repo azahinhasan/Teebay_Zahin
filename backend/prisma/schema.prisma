@@ -64,6 +64,7 @@ enum CurrentStatusTypes {
   available
   sold
   lent
+  unavailable
 }
 
 enum RentDurationTypes {

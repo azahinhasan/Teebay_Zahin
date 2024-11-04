@@ -3,9 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./auth/login.page";
 import SignUp from "./auth/signup.page";
 import Cookies from "js-cookie";
-import AllProductsPage from "./product/allProducts.pages";
+import AllProductsPage from "./product/allProducts/allProducts.pages";
 import MyTransactions from "./transaction/myTransactions"
-
+import ProductDetails from './product/productDetails/productDetails.pages';
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   return Cookies.get("token") ? children : <Navigate to="/login" />;
 };
@@ -19,6 +19,8 @@ const routesConfig = [
   { path: "/signup", element: <SignUp />, isProtected: false },
   { path: "/home", element: <AllProductsPage />, isProtected: true },
   { path: "/my-transactions", element: <MyTransactions />, isProtected: true },
+  { path: "/product/:id", element: <ProductDetails />, isProtected: true },
+
 ];
 
 const RoutesHandler = () => {

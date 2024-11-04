@@ -49,7 +49,7 @@ const NavBar: React.FC = () => {
         <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)} sx={{ display: { xs: 'block', md: 'none' } }}>
           <MenuIcon />
         </IconButton>
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Box sx={{ display: { xs: 'none', md: 'block'}}}>
           {menuItems.map(item => (
             <Button key={item.text} color="inherit" style={style} onClick={() => navigateTo(item.path)}>
               {item.text}

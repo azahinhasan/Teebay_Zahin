@@ -5,6 +5,7 @@ export enum CurrentStatusTypes {
   available = 'available',
   sold = 'sold',
   lent = 'lent',
+  unavailable = 'unavailable',
 }
 
 export enum RentDurationTypes {

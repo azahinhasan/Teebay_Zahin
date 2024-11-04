@@ -5,6 +5,10 @@ export interface ProductInfoInterface{
   description: string;
   price: number;
   image: string;
+  rentPrice?: number;
+  rentDuration?: number;
+  totalViews?: number;
+  status?: string;
   categories: CategoryInterface[]
 }
 

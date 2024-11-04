@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 // Mutation: Buy Product
 export const BUY_PRODUCT = gql`
-  mutation BuyProduct($data: BuyProductInput!) {
+  mutation BuyProduct($data: BuyProductDto!) {
     buyProduct(data: $data) {
       success
       message
@@ -20,7 +20,7 @@ export const BUY_PRODUCT = gql`
 
 // Mutation: Rent Product
 export const RENT_PRODUCT = gql`
-  mutation RentProduct($data: RentProductInput!) {
+  mutation RentProduct($data: RentProductDto!) {
     rentProduct(data: $data) {
       success
       message
