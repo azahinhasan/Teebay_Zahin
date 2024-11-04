@@ -18,9 +18,6 @@ export class RentProductDto {
   @Field(() => Int)
   productId: number;
 
-  @Field(() => TransactionActionTypes, { nullable: true })
-  transactionType?: TransactionActionTypes;
-
   @Field()
   rentalDateStart: Date;
 

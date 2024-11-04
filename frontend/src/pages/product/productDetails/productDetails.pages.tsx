@@ -3,20 +3,24 @@ import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { Box, Typography, Button, CircularProgress, Grid } from "@mui/material";
 import { GET_PRODUCT_BY_ID } from "../../../graphql/queries/product.queries";
-import { VIEW_PRODUCT } from "../../../graphql/mutations/product.mutations";
 import {
   BUY_PRODUCT,
   RENT_PRODUCT,
 } from "../../../graphql/mutations/transactions.mutations";
 import { ProductInfoInterface } from "../../../common/interface";
 import { useSnackbar } from "../../../context/snack-bar.context";
+import { useProductContext } from "../../../context/product.context";
 import { useNavigate } from "react-router-dom";
 import YesNoDialog from "../../../components/YesNoDialog";
+import RentDialog from "../../../components/RentDialog";
+
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { showAlert } = useSnackbar();
+  const { setRefetchAllProduct} = useProductContext()
   const [dialogYesNoOpen, setDialogYesNoOpen] = useState(false);
+  const [dialogRentOpen, setDialogRentOpen] = useState(false);
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
     variables: { id: id ? parseInt(id) : 0 },
     fetchPolicy: "cache-first",
@@ -26,6 +30,19 @@ const ProductDetails: React.FC = () => {
     onCompleted: (data) => {
       showAlert(data.buyProduct.message, "success");
       setDialogYesNoOpen(false);
+      setRefetchAllProduct(true);
+      navigate("/home");
+    },
+    onError: (error) => {
+      showAlert(error.message, "error");
+    },
+  });
+
+  const [rentProduct] = useMutation(RENT_PRODUCT, {
+    onCompleted: (data) => {
+      showAlert(data.rentProduct.message, "success");
+      setDialogYesNoOpen(false);
+      setRefetchAllProduct(true);
       navigate("/home");
     },
     onError: (error) => {
@@ -44,8 +61,20 @@ const ProductDetails: React.FC = () => {
       const input = {
         productId: data.getProduct.id,
       };
-
       buyProduct({ variables: { data: input } });
+    }
+  };
+
+  const handleConfirmRent = (startDate: Date | null, endDate: Date | null) => {
+    console.log(startDate, startDate);
+    setDialogRentOpen(false);
+    if (startDate && endDate && data?.getProduct) {
+      const input = {
+        productId: data.getProduct.id,
+        rentalDateStart:startDate,
+        rentalDateEnd:endDate,
+      };
+      rentProduct({ variables: { data: input } });
     }
   };
 
@@ -53,7 +82,10 @@ const ProductDetails: React.FC = () => {
   if (error) showAlert(error.message, "error");
 
   const product: ProductInfoInterface = data.getProduct;
-
+  if (!product.id) {
+    showAlert(product.message, "error");
+    navigate("/home");
+  }
   return (
     <Box
       sx={{
@@ -71,11 +103,16 @@ const ProductDetails: React.FC = () => {
         onClose={() => setDialogYesNoOpen(false)}
         onConfirm={handleConfirmBuy}
       />
+      <RentDialog
+        open={dialogRentOpen}
+        onConfirm={handleConfirmRent}
+        onClose={() => setDialogRentOpen(false)}
+      />
       <Typography variant="h4" gutterBottom>
         {product.name}
       </Typography>
       <Typography variant="body2" color="textSecondary" gutterBottom>
-        {product.categories.map((cat) => cat.name).join(", ")}
+        {product.categories?.map((cat) => cat.name).join(", ")}
       </Typography>
       <Typography variant="body2" color="textSecondary">
         Price: ${product.price}
@@ -114,7 +151,11 @@ const ProductDetails: React.FC = () => {
                 >
                   Buy
                 </Button>
-                <Button variant="contained" color="secondary">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => setDialogRentOpen(true)}
+                >
                   Rent
                 </Button>
               </Box>

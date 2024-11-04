@@ -9,6 +9,8 @@ export interface ProductInfoInterface{
   rentDuration?: number;
   totalViews?: number;
   status?: string;
+  message: string;
+  success: boolean;
   categories: CategoryInterface[]
 }
 
@@ -25,4 +27,11 @@ export interface TransactionInterface{
   rentalDateEnd: Date;
   transactionType: string;
   product: ProductInfoInterface;
+}
+
+
+export interface RentDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: (startDate: Date | null, endDate: Date | null) => void;
 }

@@ -371,7 +371,7 @@ mutation {
 
 # Mutation: Rent Product
 mutation {
-  rentProduct(data: { productId: 9, transactionType: borrowed, rentalDateStart: "2024-11-05T00:00:00.000Z", rentalDateEnd: "2024-11-10T00:00:00.000Z" }) {
+  rentProduct(data: { productId: 9, rentalDateStart: "2024-11-05T00:00:00.000Z", rentalDateEnd: "2024-11-10T00:00:00.000Z" }) {
     success
     message
     id

@@ -5,10 +5,15 @@ import { GET_ALL_PRODUCTS } from '../../../graphql/queries/product.queries';
 import { CircularProgress, Typography } from '@mui/material';
 import { ProductInfoInterface } from '../../../common/interface';
 import ProductCard from '../../../components/productCard';
+import { useProductContext } from "../../../context/product.context";
 
 const AllProductsPage: React.FC = () => {
+  const { refetchAllProduct,setRefetchAllProduct} = useProductContext()
   const { loading, error, data } = useQuery(GET_ALL_PRODUCTS, {
-    fetchPolicy: "cache-first", // This is the default behavior
+    fetchPolicy: refetchAllProduct?"network-only":"cache-first",
+    onCompleted: () => {
+      setRefetchAllProduct(false);
+    },
   });
 
   if (loading) return <CircularProgress />;
