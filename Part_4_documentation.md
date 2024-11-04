@@ -103,7 +103,7 @@ query GetAllProducts {
 
 # Query: Get Product by ID
 query GetProduct {
-  getProduct(id: 1) {
+  getProduct(id: 1,isOwnProductCheck:flase) {
     success
     message
     id

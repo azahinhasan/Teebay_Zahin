@@ -18,11 +18,11 @@ const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { showAlert } = useSnackbar();
-  const { setRefetchAllProduct} = useProductContext()
+  const { setRefetchAllProduct } = useProductContext();
   const [dialogYesNoOpen, setDialogYesNoOpen] = useState(false);
   const [dialogRentOpen, setDialogRentOpen] = useState(false);
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
-    variables: { id: id ? parseInt(id) : 0 },
+    variables: { id: id ? parseInt(id) : 0, isOwnProductCheck: false },
     fetchPolicy: "cache-first",
   });
 
@@ -71,8 +71,8 @@ const ProductDetails: React.FC = () => {
     if (startDate && endDate && data?.getProduct) {
       const input = {
         productId: data.getProduct.id,
-        rentalDateStart:startDate,
-        rentalDateEnd:endDate,
+        rentalDateStart: startDate,
+        rentalDateEnd: endDate,
       };
       rentProduct({ variables: { data: input } });
     }
