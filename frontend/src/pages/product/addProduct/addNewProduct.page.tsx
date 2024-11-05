@@ -92,26 +92,35 @@ const AddNewProduct: React.FC = () => {
 
   const handleNext = async () => {
     const errors = await formik.validateForm();
-    formik.setTouched({
-      name: true,
-      categoryIds: true,
-      description: true,
-      price: true,
-      rentPrice: true,
-      rentDuration: true,
-    });
-      if (step === 0 && errors.name) {
+    //formik.setTouched used to programmatically mark specific fields as touched, indicating user interaction for displaying validation errors.
+    if (step === 0 && errors.name) {
+      formik.setTouched({
+        name: true,
+      });
       return;
     } else if (step === 1 && errors.categoryIds) {
+      formik.setTouched({
+        categoryIds: true,
+      })
       return;
     } else if (step === 2 && errors.description) {
+      formik.setTouched({
+        description: true,
+      })
       return;
-    } else if (step === 3 && (errors.price || errors.rentPrice || errors.rentDuration)) {
+    } else if (
+      step === 3 &&
+      (errors.price || errors.rentPrice || errors.rentDuration)
+    ) {
+      formik.setTouched({
+        price: true,
+        rentPrice: true,
+        rentDuration: true,
+      })
       return;
     }
     setStep(step + 1);
   };
-  
 
   const handleBack = () => setStep(step - 1);
 
@@ -224,7 +233,7 @@ const AddNewProduct: React.FC = () => {
                   helperText={formik.touched.price && formik.errors.price}
                 />
               </Grid>
-              <Grid item xs={12}  md={6}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   variant="outlined"
@@ -243,7 +252,12 @@ const AddNewProduct: React.FC = () => {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <FormControl fullWidth variant="outlined" margin="normal" sx={{marginTop:"0px"}}>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  sx={{ marginTop: "0px" }}
+                >
                   <InputLabel>Rent Duration</InputLabel>
                   <Select
                     label="Rent Duration"
