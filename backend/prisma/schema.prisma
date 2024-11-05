@@ -44,7 +44,7 @@ model Category {
 
 model Transaction {
   id                Int       @id @default(autoincrement())
-  userId            Int
+  userId            Int // order by user name
   productId         Int
   transactionType   TransactionActionTypes?
   transactionDate   DateTime  @default(now())

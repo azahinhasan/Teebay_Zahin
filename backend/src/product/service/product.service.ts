@@ -4,7 +4,6 @@ import {
   CreateProductDto,
   UpdateProductDto,
 } from '../dto/product.mutation.dto';
-import { Product } from '@prisma/client';
 import { GetProductInfo, GetProductsInfo } from '../dto/product.query.dto';
 
 @Injectable()

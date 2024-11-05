@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/service/prisma.service';
 import { BuyProductDto, RentProductDto } from '../dto/transaction.mutation.dto';
-import { Transaction, CurrentStatusTypes, TransactionActionTypes } from '@prisma/client';
 import {GetTransactionInfo,GetTransactionOfSelf} from '../dto/transaction.query.dto' 
 
 @Injectable()
