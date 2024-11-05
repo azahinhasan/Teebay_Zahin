@@ -51,7 +51,7 @@ export class ProductService {
       },
       orderBy: {
         createdAt: 'desc',
-    });
+    }});
     return { list: data };
   }
 

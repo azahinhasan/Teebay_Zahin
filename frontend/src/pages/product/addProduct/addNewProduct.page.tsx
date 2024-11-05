@@ -101,12 +101,12 @@ const AddNewProduct: React.FC = () => {
     } else if (step === 1 && errors.categoryIds) {
       formik.setTouched({
         categoryIds: true,
-      })
+      });
       return;
     } else if (step === 2 && errors.description) {
       formik.setTouched({
         description: true,
-      })
+      });
       return;
     } else if (
       step === 3 &&
@@ -116,7 +116,7 @@ const AddNewProduct: React.FC = () => {
         price: true,
         rentPrice: true,
         rentDuration: true,
-      })
+      });
       return;
     }
     setStep(step + 1);
@@ -145,9 +145,11 @@ const AddNewProduct: React.FC = () => {
         onConfirm={handleConfirmCreate}
       />
 
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Create Product
       </Typography>
+      <hr/>
+      <br/>
       <form>
         <Grid container spacing={2}>
           {step === 0 && (
@@ -294,7 +296,15 @@ const AddNewProduct: React.FC = () => {
           {step === 4 && (
             <>
               <Grid item xs={12}>
-                Summary
+                <Typography variant="h5" gutterBottom>Summary</Typography>
+                <div>Title : {formik.values.name}</div>
+                <div>Description : {formik.values.description}</div>
+                <div>Price : {formik.values.price}</div>
+                <div>
+                  Rent Price : {formik.values.rentPrice}{" "}
+                  {formik.values.rentDuration}
+                </div>
+                {/* Category : {formik.values.categoryIds} */}
               </Grid>
               <Grid item xs={12}></Grid>
             </>
