@@ -40,10 +40,7 @@ export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({ children }) 
     setOpen(true);
   }, []);
 
-  const handleClose = (reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const handleClose = () => {
     setOpen(false);
   };
 

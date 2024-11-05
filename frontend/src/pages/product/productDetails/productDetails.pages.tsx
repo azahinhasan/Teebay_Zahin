@@ -41,8 +41,8 @@ const ProductDetails: React.FC = () => {
   const [rentProduct] = useMutation(RENT_PRODUCT, {
     onCompleted: (data) => {
       showAlert(data.rentProduct.message, "success");
-      setDialogYesNoOpen(false);
       setRefetchAllProduct(true);
+      setDialogRentOpen(false);
       navigate("/home");
     },
     onError: (error) => {
@@ -67,7 +67,6 @@ const ProductDetails: React.FC = () => {
 
   const handleConfirmRent = (startDate: Date | null, endDate: Date | null) => {
     console.log(startDate, startDate);
-    setDialogRentOpen(false);
     if (startDate && endDate && data?.getProduct) {
       const input = {
         productId: data.getProduct.id,

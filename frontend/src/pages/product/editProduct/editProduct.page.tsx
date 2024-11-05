@@ -84,14 +84,14 @@ const EditProduct: React.FC = () => {
         rentPrice: productData?.getProduct.rentPrice || 0,
         rentDuration: productData?.getProduct.rentDuration || "perDay",
         categoryIds:
-          productData?.getProduct?.categories?.map((cat) => cat.id) || [],
+          productData?.getProduct?.categories?.map((cat: CategoryInterface) => cat.id) || [],
       });
     }
   }, [id, categoriesData, productData]);
 
-  const handleConfirmUpdate = (values) => {
+  const handleConfirmUpdate = () => {
     updateProduct({
-      variables: { id: productData.getProduct.id, input: values },
+      variables: { id: productData.getProduct.id, input: formik.values },
     });
   };
 
@@ -142,7 +142,7 @@ const EditProduct: React.FC = () => {
         content={`Are you sure you want to update this product?`}
         onClose={() => setDialogYesNoOpen(false)}
         onConfirm={() => {
-          handleConfirmUpdate(formik.values);
+          handleConfirmUpdate();
           setDialogYesNoOpen(false);
         }}
       />

@@ -1,6 +1,6 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from '../service/auth.service';
-import { LoginResponse } from '../dto/login-response.dto'; 
+import { LoginResponse } from '../dto/auth.mutation.dto'; 
 import { UseGuards,UseInterceptors } from '@nestjs/common';
 import {FormatInterceptor} from '../../common/interceptor/formate-response.interceptor';
 @Resolver("auth")

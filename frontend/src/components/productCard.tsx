@@ -60,7 +60,7 @@ const ProductCard: React.FC<{
                     variant="outlined"
                     color="error"
                     size="small"
-                    onClick={(e) => {
+                    onClick={() => {
                       onDelete && onDelete(el.id);
                     }}
                   >

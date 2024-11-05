@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/service/prisma.service';
-import { LoginResponse } from '../dto/login-response.dto'; 
+import { LoginResponse } from '../dto/auth.mutation.dto'; 
 import * as dotenv from 'dotenv';
 
 @Injectable()

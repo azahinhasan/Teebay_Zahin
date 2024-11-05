@@ -18,7 +18,9 @@ const MyTransactions = () => {
     fetchPolicy: "cache-first",
   });
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent) => {
+    const target = event.currentTarget as HTMLElement;
+    const newValue = Number(target.getAttribute('data-index'));
     setValue(newValue);
   };
 
@@ -36,10 +38,10 @@ const MyTransactions = () => {
             backgroundColor: "white",
           }}
         >
-          <Tab label="Borrowed" sx={{ width: "25%" }} />
-          <Tab label="Lent" sx={{ width: "25%" }} />
-          <Tab label="Sold" sx={{ width: "25%" }} />
-          <Tab label="Bought" sx={{ width: "25%" }} />
+          <Tab label="Borrowed" sx={{ width: "25%" }}data-index={0}/>
+          <Tab label="Lent" sx={{ width: "25%" }} data-index={1}/>
+          <Tab label="Sold" sx={{ width: "25%" }} data-index={2}/>
+          <Tab label="Bought" sx={{ width: "25%" }} data-index={3}/>
         </Tabs>
       </AppBar>
       <br/>

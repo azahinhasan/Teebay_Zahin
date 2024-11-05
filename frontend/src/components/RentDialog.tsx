@@ -8,8 +8,7 @@ import {
   TextField,
   Grid,
 } from "@mui/material";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DesktopDatePicker,LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { RentDialogProps } from "../common/interface";
 import { Formik, Form, Field } from "formik";
@@ -46,19 +45,19 @@ const RentDialog: React.FC<RentDialogProps> = ({
                 <Grid container spacing={2}>
                   <Grid item sm={12} md={6}>
                     <Field name="startDate">
-                      {({ _, meta }: any) => (
+                      {(el: any) => (
                         <DesktopDatePicker
                           label="Start Date"
-                          inputFormat="dd/MM/yyyy"
+                          // inputFormat="dd/MM/yyyy"
                           value={values.startDate}
                           onChange={(newValue) =>
                             setFieldValue("startDate", newValue)
                           }
-                          renderInput={(params) => (
+                          renderInput={(params:any) => (
                             <TextField
                               {...params}
-                              error={meta.touched && Boolean(meta.error)}
-                              helperText={meta.touched && meta.error}
+                              error={el.meta.touched && Boolean(el.meta.error)}
+                              helperText={el.meta.touched && el.meta.error}
                               fullWidth
                             />
                           )}
@@ -68,19 +67,19 @@ const RentDialog: React.FC<RentDialogProps> = ({
                   </Grid>
                   <Grid item sm={12} md={6}>
                     <Field name="endDate">
-                      {({ field, meta }: any) => (
+                      {(el: any) => (
                         <DesktopDatePicker
                           label="End Date"
-                          inputFormat="dd/MM/yyyy"
+                          // inputFormat="dd/MM/yyyy"
                           value={values.endDate}
                           onChange={(newValue) =>
                             setFieldValue("endDate", newValue)
                           }
-                          renderInput={(params) => (
+                          renderInput={(params:any) => (
                             <TextField
                               {...params}
-                              error={meta.touched && Boolean(meta.error)}
-                              helperText={meta.touched && meta.error}
+                              error={el.meta.touched && Boolean(el.meta.error)}
+                              helperText={el.meta.touched && el.meta.error}
                               fullWidth
                             />
                           )}

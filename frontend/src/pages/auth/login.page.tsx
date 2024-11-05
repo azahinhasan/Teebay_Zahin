@@ -18,7 +18,7 @@ import { useSnackbar } from "../../context/snack-bar.context";
 const Login = () => {
   const navigate = useNavigate();
   const { showAlert } = useSnackbar();
-  const [login, { loading, error }] = useMutation(LOGIN_MUTATION);
+  const [login, { loading }] = useMutation(LOGIN_MUTATION);
 
   const formik = useFormik({
     initialValues: {

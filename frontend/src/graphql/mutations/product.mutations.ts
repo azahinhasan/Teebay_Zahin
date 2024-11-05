@@ -16,7 +16,6 @@ export const CREATE_PRODUCT = gql`
       user {
         id
         name
-        email
       }
       categories {
         id
@@ -42,7 +41,6 @@ export const UPDATE_PRODUCT = gql`
       user {
         id
         name
-        email
       }
       categories {
         id

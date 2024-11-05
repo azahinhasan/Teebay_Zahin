@@ -8,7 +8,6 @@ export const FIND_USER_BY_ID = gql`
       message
       id
       name
-      email
     }
   }
 `;
@@ -21,7 +20,6 @@ export const CREATE_USER = gql`
       message
       id
       name
-      email
     }
   }
 `;
@@ -34,7 +32,6 @@ export const UPDATE_USER = gql`
       message
       id
       name
-      email
     }
   }
 `;
@@ -47,7 +44,6 @@ export const DELETE_USER = gql`
       message
       id
       name
-      email
     }
   }
 `;

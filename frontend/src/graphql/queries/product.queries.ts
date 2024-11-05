@@ -17,7 +17,6 @@ export const GET_ALL_PRODUCTS = gql`
         user {
           id
           name
-          email
         }
         categories {
           id
@@ -44,7 +43,6 @@ export const GET_PRODUCT_BY_ID = gql`
       user {
         id
         name
-        email
       }
       categories {
         id
@@ -71,7 +69,6 @@ export const GET_ALL_OWN_PRODUCTS = gql`
         user {
           id
           name
-          email
         }
         categories {
           id

@@ -6,3 +6,13 @@ export class LoginResponse extends BaseResponse  {
   @Field({ nullable: true })
   token: string;
 }
+
+
+@ObjectType()
+export class CreateAuth  {
+  @Field()
+  email: string;
+
+  @Field()
+  password: string;
+}
