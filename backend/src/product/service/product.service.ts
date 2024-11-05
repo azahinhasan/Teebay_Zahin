@@ -49,6 +49,8 @@ export class ProductService {
         user: true,
         categories: true,
       },
+      orderBy: {
+        createdAt: 'desc',
     });
     return { list: data };
   }
@@ -56,7 +58,7 @@ export class ProductService {
   async findOne(
     userId: number,
     id: number,
-    isOwnProductCheck: boolean=false,
+    isOwnProductCheck: boolean = false,
   ): Promise<GetProductInfo> {
     const temp = isOwnProductCheck
       ? { userId: userId }
@@ -82,7 +84,7 @@ export class ProductService {
   ): Promise<GetProductInfo> {
     const { categoryIds, ...otherData } = data;
 
-    const product = await this.findOne(userId, id,true);
+    const product = await this.findOne(userId, id, true);
     if (product.status !== 'available' || product.userId !== userId) {
       throw new NotFoundException('Product not available for updating');
     }

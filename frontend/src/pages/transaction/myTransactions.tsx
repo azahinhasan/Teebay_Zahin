@@ -42,7 +42,7 @@ const MyTransactions = () => {
           <Tab label="Bought" sx={{ width: "25%" }} />
         </Tabs>
       </AppBar>
-      
+      <br/>
       <Box p={2} sx={{ marginTop: "10px" }}>
         {value === 0 && (
           <>

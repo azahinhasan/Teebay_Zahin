@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React from "react";
 import { Grid, Typography, Box, Button } from "@mui/material";
 import { ProductInfoInterface } from "../common/interface";
@@ -13,15 +14,13 @@ const ProductCard: React.FC<{
   const navigate = useNavigate();
 
   const navigateHandler = (product: ProductInfoInterface) => {
-    console.log(canModify)
-    if(canModify){
+    console.log(canModify);
+    if (canModify) {
       navigate(`/product/edit/${product.id}`);
-    }
-    else if (canNavigate) {
+    } else if (canNavigate) {
       navigate(`/product/${product.id}`);
     }
   };
-
 
   return (
     <Box
@@ -30,7 +29,6 @@ const ProductCard: React.FC<{
         justifyContent: "center",
         alignItems: "flex-start",
         marginTop: 2,
-        padding: 2,
       }}
     >
       <Grid container spacing={1} justifyContent="center">
@@ -44,6 +42,7 @@ const ProductCard: React.FC<{
                 borderRadius: "5px",
                 cursor: canNavigate ? "pointer" : "default",
                 position: "relative",
+                width: "100%",
               }}
               onClick={() => navigateHandler(el)}
             >
@@ -61,8 +60,9 @@ const ProductCard: React.FC<{
                     variant="outlined"
                     color="error"
                     size="small"
-                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    onClick={(e) => {onDelete&&onDelete(el.id)}}
+                    onClick={(e) => {
+                      onDelete && onDelete(el.id);
+                    }}
                   >
                     Delete
                   </Button>

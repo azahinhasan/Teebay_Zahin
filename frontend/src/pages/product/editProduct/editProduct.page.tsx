@@ -38,13 +38,20 @@ const EditProduct: React.FC = () => {
   } = useQuery(GET_PRODUCT_BY_ID, {
     variables: { id: id ? parseInt(id) : 0, isOwnProductCheck: true },
     fetchPolicy: "cache-first",
+    onCompleted: (data) => {
+      console.log(data);
+      if (!data.getProduct.id) {
+        navigate("/my-products");
+        console.log("Product not found");
+      }
+    },
   });
 
   const {
     loading: categoriesLoading,
     error: categoriesError,
     data: categoriesData,
-  } = useQuery(GET_ALL_CATEGORIES);
+  } = useQuery(GET_ALL_CATEGORIES, { fetchPolicy: "cache-first" });
 
   const [updateProduct] = useMutation(UPDATE_PRODUCT, {
     onCompleted: (res) => {
@@ -62,21 +69,22 @@ const EditProduct: React.FC = () => {
   });
 
   useEffect(() => {
+    console.log(productData);
     if (!id) {
       navigate("/my-products");
     }
     if (categoriesData) {
       setCategories(categoriesData.getAllCategories.list);
     }
-    if (productData) {
+    if (productData?.getProduct?.id) {
       formik.setValues({
         name: productData?.getProduct.name || "",
         description: productData?.getProduct.description || "",
         price: productData?.getProduct.price || 0,
         rentPrice: productData?.getProduct.rentPrice || 0,
-        rentDuration: productData?.getProduct.rentDuration || "perDay", 
+        rentDuration: productData?.getProduct.rentDuration || "perDay",
         categoryIds:
-          productData?.getProduct.categories.map((cat) => cat.id) || [],
+          productData?.getProduct?.categories?.map((cat) => cat.id) || [],
       });
     }
   }, [id, categoriesData, productData]);
@@ -89,12 +97,12 @@ const EditProduct: React.FC = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: productData?.getProduct.name || "",
-      description: productData?.getProduct.description || "",
-      price: productData?.getProduct.price || 0,
-      rentPrice: productData?.getProduct.rentPrice || 0,
-      rentDuration: productData?.getProduct.rentDuration || "perDay", 
-      categoryIds: productData?.getProduct.categories.map((el) => el.id) || [],
+      name: "",
+      description: "",
+      price: 0,
+      rentPrice: 0,
+      rentDuration: "perDay",
+      categoryIds: [],
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
@@ -121,10 +129,10 @@ const EditProduct: React.FC = () => {
   return (
     <Box
       sx={{
-        padding: 3,
-        maxWidth: 600,
+        padding: 1.5,
+        maxWidth: { xs: 1000, md: 600 },
         margin: "auto",
-        border: "1px solid lightgray",
+        border: { xs: "none", md: "1px solid lightgray" },
         textAlign: "left",
       }}
     >
@@ -143,7 +151,7 @@ const EditProduct: React.FC = () => {
         Edit Product
       </Typography>
       <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -154,9 +162,9 @@ const EditProduct: React.FC = () => {
               onChange={formik.handleChange}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={
-                formik.touched.name && typeof formik.errors.name === 'string'
+                formik.touched.name && typeof formik.errors.name === "string"
                   ? formik.errors.name
-                  : ''
+                  : ""
               }
               margin="normal"
             />
@@ -172,10 +180,11 @@ const EditProduct: React.FC = () => {
                 value={formik.values.categoryIds}
                 onChange={formik.handleChange}
                 error={
-                  formik.touched.categoryIds && Boolean(formik.errors.categoryIds)
+                  formik.touched.categoryIds &&
+                  Boolean(formik.errors.categoryIds)
                 }
               >
-                {categories?.map((category:CategoryInterface) => (
+                {categories?.map((category: CategoryInterface) => (
                   <MenuItem key={category.id} value={category.id}>
                     {category.name}
                   </MenuItem>
@@ -183,7 +192,7 @@ const EditProduct: React.FC = () => {
               </Select>
               {formik.touched.categoryIds && formik.errors.categoryIds && (
                 <Typography color="error" variant="body2">
-                  {formik.errors.categoryIds??""}
+                  {formik.errors.categoryIds ?? ""}
                 </Typography>
               )}
             </FormControl>
@@ -203,15 +212,16 @@ const EditProduct: React.FC = () => {
                 formik.touched.description && Boolean(formik.errors.description)
               }
               helperText={
-                formik.touched.description && typeof formik.errors.description === 'string'
+                formik.touched.description &&
+                typeof formik.errors.description === "string"
                   ? formik.errors.description
-                  : ''
+                  : ""
               }
               margin="normal"
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12}>
             <TextField
               fullWidth
               variant="outlined"
@@ -222,9 +232,9 @@ const EditProduct: React.FC = () => {
               onChange={formik.handleChange}
               error={formik.touched.price && Boolean(formik.errors.price)}
               helperText={
-                formik.touched.price && typeof formik.errors.price === 'string'
+                formik.touched.price && typeof formik.errors.price === "string"
                   ? formik.errors.price
-                  : ''
+                  : ""
               }
               margin="normal"
             />
@@ -239,17 +249,20 @@ const EditProduct: React.FC = () => {
               type="number"
               value={formik.values.rentPrice}
               onChange={formik.handleChange}
-              error={formik.touched.rentPrice && Boolean(formik.errors.rentPrice)}
+              error={
+                formik.touched.rentPrice && Boolean(formik.errors.rentPrice)
+              }
               helperText={
-                formik.touched.rentPrice && typeof formik.errors.rentPrice === 'string'
+                formik.touched.rentPrice &&
+                typeof formik.errors.rentPrice === "string"
                   ? formik.errors.rentPrice
-                  : ''
+                  : ""
               }
               margin="normal"
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} md={6}>
             <FormControl fullWidth variant="outlined" margin="normal">
               <InputLabel>Rent Duration</InputLabel>
               <Select
@@ -258,7 +271,8 @@ const EditProduct: React.FC = () => {
                 value={formik.values.rentDuration}
                 onChange={formik.handleChange}
                 error={
-                  formik.touched.rentDuration && Boolean(formik.errors.rentDuration)
+                  formik.touched.rentDuration &&
+                  Boolean(formik.errors.rentDuration)
                 }
               >
                 {["perHour", "perDay", "perWeek", "perMonth", "perYear"].map(
@@ -271,7 +285,7 @@ const EditProduct: React.FC = () => {
               </Select>
               {formik.touched.rentDuration && formik.errors.rentDuration && (
                 <Typography color="error" variant="body2">
-                  {formik.errors.rentDuration??""}
+                  {formik.errors.rentDuration ?? ""}
                 </Typography>
               )}
             </FormControl>

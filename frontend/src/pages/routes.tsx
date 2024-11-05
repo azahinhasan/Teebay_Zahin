@@ -8,6 +8,7 @@ import MyTransactions from "./transaction/myTransactions"
 import ProductDetails from './product/productDetails/productDetails.pages';
 import MyProductsPage from "./product/myProducts/myProducts.pages";
 import EditProduct from "./product/editProduct/editProduct.page";
+import AddNewProduct from "./product/addProduct/addNewProduct.page";
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   return Cookies.get("token") ? children : <Navigate to="/login" />;
 };
@@ -24,6 +25,8 @@ const routesConfig = [
   { path: "/product/:id", element: <ProductDetails />, isProtected: true },
   { path: "/my-products", element: <MyProductsPage />, isProtected: true },
   { path: "/product/edit/:id", element: <EditProduct />, isProtected: true },
+  { path: "/product/add", element: <AddNewProduct />, isProtected: true },
+  
 ];
 
 const RoutesHandler = () => {
