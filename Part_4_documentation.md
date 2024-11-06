@@ -1,10 +1,23 @@
-## GraphQL Usage
+# Technical documentation
 
+## Technology Used
+
+- Nest js
+- React js
+- GraphQL
+- Material UI
+- Prisma
+- PostgreSQL 16
+- Docker and more.
+
+
+## Some example for GraphQL query
 
 ```graphql
 ############ Auth ############
 
 # GraphQL Mutation: Login
+## Before that run mutation of createUser
 mutation Login {
   login(email: "johndoe@example.com", password: "securePassword123") {
     success
@@ -41,7 +54,7 @@ query FindUserById {
 
 # Mutation: Create User
 mutation CreateUser {
-  createUser(input: { name: "John Doe", email: "johndoe@example.com", password: "securePassword123" }) {
+  createUser(input: { name: "Test_user", email: "Test_user@example.com", password: "Test_user" }) {
     success
     message
     id
@@ -52,7 +65,7 @@ mutation CreateUser {
 
 # Mutation: Update User
 mutation UpdateUser {
-  updateUser(input: { id: 1, name: "John Updated 2", email: "johnupdated@example.com" }) {
+  updateUser(input: { id: 1, name: "Test_user 2", email: "Test_user@example.com" }) {
     success
     message
     id
@@ -103,7 +116,7 @@ query GetAllProducts {
 
 # Query: Get Product by ID
 query GetProduct {
-  getProduct(id: 1,isOwnProductCheck:flase) {
+  getProduct(id: 1,isOwnProductCheck:false) {
     success
     message
     id

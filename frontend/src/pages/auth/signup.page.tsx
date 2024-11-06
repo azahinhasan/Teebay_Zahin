@@ -67,6 +67,7 @@ const SignUp = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        margin: "-80px auto",
       }}
     >
       <Card sx={{ maxWidth: 400, padding: 2 }}>

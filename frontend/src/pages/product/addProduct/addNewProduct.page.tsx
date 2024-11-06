@@ -17,7 +17,6 @@ import { CREATE_PRODUCT } from "../../../graphql/mutations/product.mutations";
 import { GET_ALL_CATEGORIES } from "../../../graphql/queries/categories.queries";
 import { CategoryInterface } from "../../../common/interface";
 import { useSnackbar } from "../../../context/snack-bar.context";
-import { useProductContext } from "../../../context/product.context";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import YesNoDialog from "../../../components/YesNoDialog";
@@ -26,7 +25,6 @@ import { GET_ALL_OWN_PRODUCTS } from "../../../graphql/queries/product.queries";
 const AddNewProduct: React.FC = () => {
   const navigate = useNavigate();
   const { showAlert } = useSnackbar();
-  const { setRefetchMyAllProduct } = useProductContext();
   const [dialogYesNoOpen, setDialogYesNoOpen] = useState(false);
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
   const [step, setStep] = useState(0);

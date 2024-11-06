@@ -29,7 +29,7 @@ services:
     build:
       context: ./frontend
     ports:
-      - "5173:5173"
+      - "5179:5179"
     environment:
       - VITE_SERVER_ENDPOINT=http://localhost:5010
     depends_on:
