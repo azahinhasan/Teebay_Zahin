@@ -5,7 +5,6 @@ import {
   Typography,
   TextField,
   Button,
-  CardActions,
   CircularProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
@@ -41,12 +40,12 @@ const Login = () => {
           Cookies.set("token", data.login.token);
           window.location.reload();
         } else {
-          showAlert(data.login.message,'error')
+          showAlert(data.login.message, "error");
           console.log(data.login.message);
         }
       } catch (e) {
         console.error("Login failed:", e);
-        showAlert("Failed to login",'error')
+        showAlert("Failed to login", "error");
       }
     },
   });
@@ -90,29 +89,26 @@ const Login = () => {
               helperText={formik.touched.password && formik.errors.password}
               margin="normal"
             />
-
-            <CardActions>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                disabled={loading}
-              >
-                {loading ? <CircularProgress size={24} /> : "Login"}
-              </Button>
-            </CardActions>
-
-            <CardActions>
-              <Button
-                variant="outlined"
-                color="primary"
-                fullWidth
-                onClick={() => navigate("/signup")} 
-              >
-                Sign Up
-              </Button>
-            </CardActions>
+            <br />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} /> : "Login"}
+            </Button>
+            <br />
+            <br />
+            <Button
+              variant="outlined"
+              color="primary"
+              fullWidth
+              onClick={() => navigate("/signup")}
+            >
+              Sign Up
+            </Button>
           </form>
         </CardContent>
       </Card>

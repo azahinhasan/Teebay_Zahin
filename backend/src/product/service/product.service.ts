@@ -43,7 +43,7 @@ export class ProductService {
 
   async findAllOwnProducts(userId: number): Promise<GetProductsInfo> {
     const data = await this.prisma.product.findMany({
-      where: { userId },
+      where: { userId,transactions: { none: {} } },
       include: {
         user: true,
         categories: true,

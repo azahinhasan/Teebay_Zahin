@@ -3,6 +3,8 @@ import React from "react";
 import { Grid, Typography, Box, Button } from "@mui/material";
 import { ProductInfoInterface } from "../common/interface";
 import { useNavigate } from "react-router-dom";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 
 const ProductCard: React.FC<{
   data: ProductInfoInterface[];
@@ -44,7 +46,6 @@ const ProductCard: React.FC<{
                 position: "relative",
                 width: "100%",
               }}
-              onClick={() => navigateHandler(el)}
             >
               {canModify && (
                 <Box
@@ -53,19 +54,18 @@ const ProductCard: React.FC<{
                     top: 10,
                     right: 10,
                     display: "flex",
-                    flexDirection: "column",
                   }}
                 >
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    size="small"
+                  <EditNoteIcon
+                    style={{color:"#1976D2"}}
+                    onClick={() => navigateHandler(el)}
+                  />
+                  <DeleteForeverIcon
+                    style={{color:"red"}}
                     onClick={() => {
                       onDelete && onDelete(el.id);
                     }}
-                  >
-                    Delete
-                  </Button>
+                  />
                 </Box>
               )}
               <Typography variant="h6">{el.name}</Typography>
@@ -77,11 +77,11 @@ const ProductCard: React.FC<{
               </div>
               <div
                 style={{
-                  display: "-webkit-box" as const,
+                  display: "-webkit-box",
                   WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical" as const,
-                  overflow: "hidden" as const,
-                  textOverflow: "ellipsis" as const,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
                 {el.description}

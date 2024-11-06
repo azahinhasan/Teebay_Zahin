@@ -16,7 +16,6 @@ const RoutesHandler = () => {
     return isAuthenticated ? children : <Navigate to="/login" />;
   };
   const NotProtectedRoute = ({ children }: { children: JSX.Element }) => {
-    console.log("children");
     return !isAuthenticated ? children : <Navigate to="/home" />;
   };
 
@@ -59,7 +58,7 @@ const RoutesHandler = () => {
             Cookies.get("token") ? (
               <Navigate to="/home" />
             ) : (
-              <Navigate to="/signup" />
+              <Navigate to="/login" />
             )
           }
         />

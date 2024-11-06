@@ -5,7 +5,6 @@ import {
   Typography,
   TextField,
   Button,
-  CardActions,
   CircularProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
@@ -24,6 +23,7 @@ const SignUp = () => {
       name: "",
       email: "",
       password: "",
+      confirmPassword: "", // New field
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
@@ -31,18 +31,27 @@ const SignUp = () => {
         .email("Invalid email address")
         .required("Email is required"),
       password: Yup.string().required("Password is required"),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password")], "Passwords must match")
+        .required("Please retype your password"),
     }),
     onSubmit: async (values) => {
       try {
         const { data } = await createUser({
-          variables: { input: { ...values } },
+          variables: {
+            input: {
+              name: values.name,
+              email: values.email,
+              password: values.password,
+            },
+          },
         });
-        console.log(data)
+        console.log(data);
         if (data.createUser.success) {
           showAlert("Successfully signed up", "success");
           navigate("/login");
         } else {
-          showAlert("Failed to signed up", "error");
+          showAlert("Failed to sign up. Try with another mail.", "error");
           console.log(data.createUser.message);
         }
       } catch (e) {
@@ -99,6 +108,21 @@ const SignUp = () => {
               helperText={formik.touched.password && formik.errors.password}
               margin="normal"
             />
+            <TextField
+              fullWidth
+              label="Retype Password"
+              variant="outlined"
+              type="password"
+              {...formik.getFieldProps("confirmPassword")}
+              error={
+                formik.touched.confirmPassword &&
+                Boolean(formik.errors.confirmPassword)
+              }
+              helperText={
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+              }
+              margin="normal"
+            />
 
             {error && (
               <Typography color="error">
@@ -106,27 +130,26 @@ const SignUp = () => {
               </Typography>
             )}
 
-            <CardActions>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                disabled={loading}
-              >
-                {loading ? <CircularProgress size={24} /> : "Sign Up"}
-              </Button>
-            </CardActions>
-            <CardActions>
-              <Button
-                variant="outlined"
-                color="primary"
-                fullWidth
-                onClick={() => navigate("/login")}
-              >
-                Login
-              </Button>
-            </CardActions>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} /> : "Sign Up"}
+            </Button>
+            <br/>
+            <br/>
+
+            <Button
+              variant="outlined"
+              color="primary"
+              fullWidth
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </Button>
           </form>
         </CardContent>
       </Card>

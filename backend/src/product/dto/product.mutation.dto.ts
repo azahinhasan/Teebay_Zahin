@@ -1,4 +1,3 @@
-import { IsNotEmpty, IsNumber, IsString, IsEnum, IsOptional,IsArray,ArrayNotEmpty } from 'class-validator';
 import { InputType, Field, Float, Int } from '@nestjs/graphql';
 
 export enum CurrentStatusTypes {
@@ -18,81 +17,48 @@ export enum RentDurationTypes {
 
 @InputType() 
 export class CreateProductDto {
-  @IsNotEmpty()
-  @IsString()
   @Field(() => String)
   name: string;
 
-  @IsNotEmpty()
-  @IsString()
   @Field(() => String)
   description: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  @Field(() => Float) // Specify Float for price
+  @Field(() => Float)
   price: number;
 
-  @IsNotEmpty()
-  @IsNumber()
-  @Field(() => Float) // Specify Float for rentPrice
+  @Field(() => Float)
   rentPrice: number;
 
-  @IsOptional()
-  @IsEnum(RentDurationTypes)
-  @Field(() => RentDurationTypes, { nullable: true })
-  rentDuration?: RentDurationTypes;
+  @Field(() => RentDurationTypes)
+  rentDuration: RentDurationTypes;
 
-  @IsOptional()
-  @IsEnum(CurrentStatusTypes)
   @Field(() => CurrentStatusTypes, { nullable: true })
   status?: CurrentStatusTypes;
 
-  @IsArray()
-  @ArrayNotEmpty() 
-  @Field(() => [Int]) 
-  categoryIds: number[]; 
-
-  // @IsNotEmpty()
-  // @IsNumber()
-  // @Field(() => Int) 
-  // userId?: number;
+  @Field(() => [Int])
+  categoryIds: number[];
 }
 
-@InputType() // Add '@' before InputType
+@InputType() 
 export class UpdateProductDto {
-  @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   name?: string;
 
-  @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   description?: string;
 
-  @IsOptional()
-  @IsNumber()
-  @Field(() => Float, { nullable: true }) 
+  @Field(() => Float) 
   price?: number;
 
-  @IsOptional()
-  @IsNumber()
-  @Field(() => Float, { nullable: true })
+  @Field(() => Float)
   rentPrice?: number;
 
-  @IsOptional()
-  @IsEnum(RentDurationTypes)
-  @Field(() => RentDurationTypes, { nullable: true })
+  @Field(() => RentDurationTypes)
   rentDuration?: RentDurationTypes;
 
-  @IsOptional()
-  @IsEnum(CurrentStatusTypes)
-  @Field(() => CurrentStatusTypes, { nullable: true })
+  @Field(() => CurrentStatusTypes,{ nullable: true })
   status?: CurrentStatusTypes;
 
-  @IsArray()
-  @ArrayNotEmpty() 
-  @Field(() => [Int]) 
-  categoryIds: number[]; 
+  @Field(() => [Int])
+  categoryIds?: number[];
 }
