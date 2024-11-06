@@ -11,11 +11,16 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { TransactionInterface } from "../../common/interface";
+import { useProductContext } from "../../context/product.context";
 
 const MyTransactions = () => {
+  const { refetchTransaction,setRefetchTransaction } = useProductContext();
   const [value, setValue] = useState(0);
   const { data, loading, error } = useQuery(GET_USER_TRANSACTIONS, {
-    fetchPolicy: "cache-first",
+    fetchPolicy: refetchTransaction?"network-only":"cache-first",
+    onCompleted: () => {
+      setRefetchTransaction(false);
+    },
   });
 
   const handleChange = (event: React.SyntheticEvent) => {

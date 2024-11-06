@@ -1,12 +1,12 @@
 import { createContext, useContext, useState, useMemo, ReactNode } from "react";
-import { ProductInfoInterface } from "../common/interface";
 
 interface ProductContextType {
-  products?: ProductInfoInterface[];
   refetchAllProduct: boolean;
   setRefetchAllProduct: (value: boolean) => void;
   refetchMyAllProduct: boolean;
   setRefetchMyAllProduct: (value: boolean) => void;
+  refetchTransaction: boolean;
+  setRefetchTransaction: (value: boolean) => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -22,7 +22,7 @@ export const useProductContext = () => {
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [refetchAllProduct, setRefetchAllProduct] = useState<boolean>(false);
   const [refetchMyAllProduct, setRefetchMyAllProduct] = useState<boolean>(false);
-  const [product, setProduct] = useState<ProductInfoInterface>();
+  const [refetchTransaction, setRefetchTransaction] = useState<boolean>(false);
 
 
   const value = useMemo(() => ({
@@ -30,9 +30,9 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     setRefetchAllProduct,
     refetchMyAllProduct,
     setRefetchMyAllProduct,
-    product,
-    setProduct,
-  }), [refetchAllProduct, refetchMyAllProduct,product]); 
+    setRefetchTransaction,
+    refetchTransaction
+  }), [refetchAllProduct, refetchMyAllProduct,refetchTransaction]); 
 
   return (
     <ProductContext.Provider value={value}>

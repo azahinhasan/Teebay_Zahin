@@ -18,7 +18,7 @@ const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { showAlert } = useSnackbar();
-  const { setRefetchAllProduct } = useProductContext();
+  const { setRefetchAllProduct,setRefetchTransaction } = useProductContext();
   const [dialogYesNoOpen, setDialogYesNoOpen] = useState(false);
   const [dialogRentOpen, setDialogRentOpen] = useState(false);
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
@@ -31,6 +31,7 @@ const ProductDetails: React.FC = () => {
       showAlert(data.buyProduct.message, "success");
       setDialogYesNoOpen(false);
       setRefetchAllProduct(true);
+      setRefetchTransaction(true);
       navigate("/home");
     },
     onError: (error) => {
@@ -42,6 +43,7 @@ const ProductDetails: React.FC = () => {
     onCompleted: (data) => {
       showAlert(data.rentProduct.message, "success");
       setRefetchAllProduct(true);
+      setRefetchTransaction(true);
       setDialogRentOpen(false);
       navigate("/home");
     },
