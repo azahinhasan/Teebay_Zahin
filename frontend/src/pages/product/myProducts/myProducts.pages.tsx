@@ -33,19 +33,15 @@ const MyProductsPage: React.FC = () => {
   const [deleteProduct] = useMutation(DELETE_PRODUCT, {
     onCompleted: (res) => {
       if (res.deleteProduct.success) {
-        showAlert(res.deleteProduct.message, "success");
         const existingOwnProducts: any = client.readQuery({
           query: GET_ALL_OWN_PRODUCTS,
         });
-        console.log(existingOwnProducts)
         if (existingOwnProducts) {
-          console.log(existingOwnProducts)
           const updatedOwnProducts =
             existingOwnProducts.getAllOwnProducts.list.filter(
               (product: ProductInfoInterface) =>
                 product.id !== selectedProductId
             );
-          console.log(updatedOwnProducts)
           client.writeQuery({
             query: GET_ALL_OWN_PRODUCTS,
             data: {
@@ -56,6 +52,7 @@ const MyProductsPage: React.FC = () => {
             },
           });
         }
+        showAlert(res.deleteProduct.message, "success");
         setSelectedProductId(0);
       } else {
         showAlert(res.deleteProduct.message, "error");
@@ -97,13 +94,13 @@ const MyProductsPage: React.FC = () => {
         onClose={() => setSelectedProductId(0)}
         onConfirm={() => deleteHandler(selectedProductId)}
       />
-
+      <br/>
       <Box
         sx={{
           display: "flex",
           gap: 2,
           justifyContent: "flex-end",
-          marginRight: { xs: "-13px", sm: "33px", md: "43px", lg: "63px" },
+          marginRight: { xs: "0px", sm: "75px", md: "95px", lg: "105px" },
         }}
       >
         <Button
@@ -114,28 +111,25 @@ const MyProductsPage: React.FC = () => {
           Add
         </Button>
       </Box>
-      <br />
-
       {products.length > 0 ? (
         <>
+          <ProductCard
+            data={products}
+            canModify={true}
+            onDelete={(id) => setSelectedProductId(id)}
+          />
+          <br/>
           <Box
             sx={{
               margin: "auto",
-              width: { xs: "90%", sm: "70%", md: "50%", lg: "50%" },
+              width: { xs: "100%", sm: "83%", md: "83%", lg: "83%" },
             }}
           >
             <Alert variant="outlined" severity="warning">
               The product will only be displayed if it has no transaction
-              history.
+              history.But can be found under my transaction.
             </Alert>
           </Box>
-
-          <ProductCard
-            data={products}
-            canNavigate={true}
-            canModify={true}
-            onDelete={(id) => setSelectedProductId(id)}
-          />
         </>
       ) : (
         <Typography>No products available</Typography>

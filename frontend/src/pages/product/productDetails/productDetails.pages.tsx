@@ -92,8 +92,8 @@ const ProductDetails: React.FC = () => {
       sx={{
         padding: 3,
         maxWidth: 600,
-        margin: "auto",
-        border: "1px solid lightgray",
+        margin: "10px auto",
+        border: { xs: "none", sm: "1px solid lightgray"},
         textAlign: "left",
       }}
     >

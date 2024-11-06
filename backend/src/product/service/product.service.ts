@@ -74,7 +74,7 @@ export class ProductService {
       },
     });
     if (!product) {
-      throw new NotFoundException('Product not found');
+      throw new NotFoundException('Product not found or do not have access');
     }
     await this.incrementViewCount(id);
     return product;

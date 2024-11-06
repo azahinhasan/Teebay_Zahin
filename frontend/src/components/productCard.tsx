@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React from "react";
-import { Grid, Typography, Box, Button } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import { ProductInfoInterface } from "../common/interface";
 import { useNavigate } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -16,10 +16,7 @@ const ProductCard: React.FC<{
   const navigate = useNavigate();
 
   const navigateHandler = (product: ProductInfoInterface) => {
-    console.log(canModify);
-    if (canModify) {
-      navigate(`/product/edit/${product.id}`);
-    } else if (canNavigate) {
+    if (canNavigate) {
       navigate(`/product/${product.id}`);
     }
   };
@@ -46,6 +43,7 @@ const ProductCard: React.FC<{
                 position: "relative",
                 width: "100%",
               }}
+              onClick={() => navigateHandler(el)}
             >
               {canModify && (
                 <Box
@@ -57,11 +55,11 @@ const ProductCard: React.FC<{
                   }}
                 >
                   <EditNoteIcon
-                    style={{color:"#1976D2"}}
-                    onClick={() => navigateHandler(el)}
+                    style={{ color: "#1976D2",cursor: "pointer" }}
+                    onClick={() => navigate(`/product/edit/${el.id}`)}
                   />
                   <DeleteForeverIcon
-                    style={{color:"red"}}
+                    style={{ color: "red",cursor: "pointer" }}
                     onClick={() => {
                       onDelete && onDelete(el.id);
                     }}

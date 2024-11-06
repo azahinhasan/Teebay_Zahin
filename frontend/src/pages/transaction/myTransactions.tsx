@@ -9,15 +9,16 @@ import {
   Box,
   Typography,
   CircularProgress,
+  Alert,
 } from "@mui/material";
 import { TransactionInterface } from "../../common/interface";
 import { useProductContext } from "../../context/product.context";
 
 const MyTransactions = () => {
-  const { refetchTransaction,setRefetchTransaction } = useProductContext();
+  const { refetchTransaction, setRefetchTransaction } = useProductContext();
   const [value, setValue] = useState(0);
   const { data, loading, error } = useQuery(GET_USER_TRANSACTIONS, {
-    fetchPolicy: refetchTransaction?"network-only":"cache-first",
+    fetchPolicy: refetchTransaction ? "network-only" : "cache-first",
     onCompleted: () => {
       setRefetchTransaction(false);
     },
@@ -25,12 +26,23 @@ const MyTransactions = () => {
 
   const handleChange = (event: React.SyntheticEvent) => {
     const target = event.currentTarget as HTMLElement;
-    const newValue = Number(target.getAttribute('data-index'));
+    const newValue = Number(target.getAttribute("data-index"));
     setValue(newValue);
   };
 
+  const noDataAlart = (text: string) => (
+    <Alert
+      variant="outlined"
+      severity="info"
+      style={{ width: "250px", margin: "10px auto" }}
+    >
+      {text}
+    </Alert>
+  );
+
   if (loading) return <CircularProgress />;
-  if (error) return <Typography color="error">Error: {error.message}</Typography>;
+  if (error)
+    return <Typography color="error">Error: {error.message}</Typography>;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -43,13 +55,13 @@ const MyTransactions = () => {
             backgroundColor: "white",
           }}
         >
-          <Tab label="Borrowed" sx={{ width: "25%" }}data-index={0}/>
-          <Tab label="Lent" sx={{ width: "25%" }} data-index={1}/>
-          <Tab label="Sold" sx={{ width: "25%" }} data-index={2}/>
-          <Tab label="Bought" sx={{ width: "25%" }} data-index={3}/>
+          <Tab label="Borrowed" sx={{ width: "25%" }} data-index={0} />
+          <Tab label="Lent" sx={{ width: "25%" }} data-index={1} />
+          <Tab label="Sold" sx={{ width: "25%" }} data-index={2} />
+          <Tab label="Bought" sx={{ width: "25%" }} data-index={3} />
         </Tabs>
       </AppBar>
-      <br/>
+      <br />
       <Box p={2} sx={{ marginTop: "10px" }}>
         {value === 0 && (
           <>
@@ -60,7 +72,7 @@ const MyTransactions = () => {
                 )}
               />
             ) : (
-              <Typography>No borrowed transactions found.</Typography>
+              noDataAlart("No borrowed transactions found.")
             )}
           </>
         )}
@@ -73,7 +85,7 @@ const MyTransactions = () => {
                 )}
               />
             ) : (
-              <Typography>No lent transactions found.</Typography>
+              noDataAlart("No lent transactions found.")
             )}
           </>
         )}
@@ -86,7 +98,7 @@ const MyTransactions = () => {
                 )}
               />
             ) : (
-              <Typography>No sold transactions found.</Typography>
+              noDataAlart("No sold transactions found.")
             )}
           </>
         )}
@@ -99,7 +111,7 @@ const MyTransactions = () => {
                 )}
               />
             ) : (
-              <Typography>No bought transactions found.</Typography>
+              noDataAlart("No bought transactions found.")
             )}
           </>
         )}
