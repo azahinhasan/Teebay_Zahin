@@ -103,8 +103,7 @@ export class ProductService {
     });
   }
 
-  async remove(userId: number, id: number): Promise<GetProductInfo> {
-    const product = await this.findOne(userId, id, true);
+  async remove(id: number): Promise<GetProductInfo> {
     const transaction = await this.prisma.transaction.findFirst({
       where: { id },
     });

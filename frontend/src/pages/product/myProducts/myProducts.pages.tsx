@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery,useMutation } from "@apollo/client";
 import { GET_ALL_OWN_PRODUCTS } from "../../../graphql/queries/product.queries";
 import { DELETE_PRODUCT } from "../../../graphql/mutations/product.mutations";
 import {
@@ -14,8 +14,10 @@ import ProductCard from "../../../components/productCard";
 import { useProductContext } from "../../../context/product.context";
 import { useNavigate } from "react-router-dom";
 import YesNoDialog from "../../../components/YesNoDialog";
+import { useSnackbar } from "../../../context/snack-bar.context";
 
 const MyProductsPage: React.FC = () => {
+  const { showAlert } = useSnackbar();
   const [selectedProductId, setSelectedProductId] = useState<number>(0);
   const { refetchMyAllProduct, setRefetchMyAllProduct } = useProductContext();
   const navigate = useNavigate();
@@ -23,6 +25,19 @@ const MyProductsPage: React.FC = () => {
     fetchPolicy: refetchMyAllProduct ? "network-only" : "cache-first",
     onCompleted: () => {
       setRefetchMyAllProduct(false);
+    },
+  });
+
+  const [deleteProduct] = useMutation(DELETE_PRODUCT, {
+    onCompleted: (res) => {
+      if (res.deleteProduct.success) {
+        showAlert(res.deleteProduct.message, "success");
+      } else {
+        showAlert(res.deleteProduct.message, "error");
+      }
+    },
+    onError: (error) => {
+      showAlert(error.message, "error");
     },
   });
 
@@ -34,6 +49,9 @@ const MyProductsPage: React.FC = () => {
 
   const deleteHandler = (id: number) => {
     console.log(id);
+    deleteProduct({
+      variables: { id },
+    });
     setSelectedProductId(0);
   };
 

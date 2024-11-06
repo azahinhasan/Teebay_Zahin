@@ -51,10 +51,9 @@ export class ProductResolver {
 
   @Mutation(() => GetProductInfo)
   async deleteProduct(
-    @Context() context: any,
     @Args('id') id: number,
   ): Promise<GetProductInfo> {
-    return this.productService.remove(context.req.user_id,id);
+    return this.productService.remove(id);
   }
 
   @Mutation(() => GetProductInfo)
