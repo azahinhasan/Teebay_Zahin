@@ -37,20 +37,24 @@ export class ProductService {
         user: true,
         categories: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
     return { list: data };
   }
 
   async findAllOwnProducts(userId: number): Promise<GetProductsInfo> {
     const data = await this.prisma.product.findMany({
-      where: { userId,transactions: { none: {} } },
+      where: { userId, transactions: { none: {} } },
       include: {
         user: true,
         categories: true,
       },
       orderBy: {
         createdAt: 'desc',
-    }});
+      },
+    });
     return { list: data };
   }
 

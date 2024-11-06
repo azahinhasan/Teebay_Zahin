@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery, useApolloClient } from "@apollo/client";
 import {
   Box,
   Typography,
@@ -21,6 +21,7 @@ import { useProductContext } from "../../../context/product.context";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import YesNoDialog from "../../../components/YesNoDialog";
+import { GET_ALL_OWN_PRODUCTS } from "../../../graphql/queries/product.queries";
 
 const AddNewProduct: React.FC = () => {
   const navigate = useNavigate();
@@ -29,19 +30,38 @@ const AddNewProduct: React.FC = () => {
   const [dialogYesNoOpen, setDialogYesNoOpen] = useState(false);
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
   const [step, setStep] = useState(0);
+  const client = useApolloClient();
 
   const {
     loading: categoriesLoading,
     error: categoriesError,
     data: categoriesData,
-  } = useQuery(GET_ALL_CATEGORIES);
+  } = useQuery(GET_ALL_CATEGORIES, {
+    fetchPolicy: "cache-first",
+  });
 
   const [createProduct] = useMutation(CREATE_PRODUCT, {
     onCompleted: (res) => {
       if (res.createProduct.success) {
         showAlert(res.createProduct.message, "success");
+
+        const existingOwnProducts: any = client.readQuery({
+          query: GET_ALL_OWN_PRODUCTS,
+        });
+        const updatedOwnProducts = [
+          res.createProduct,
+          ...existingOwnProducts.getAllOwnProducts.list,
+        ];
+        client.writeQuery({
+          query: GET_ALL_OWN_PRODUCTS,
+          data: {
+            getAllOwnProducts: {
+              ...existingOwnProducts.getAllOwnProducts,
+              list: updatedOwnProducts,
+            },
+          },
+        });
         navigate("/my-products");
-        setRefetchMyAllProduct(true);
       } else {
         showAlert(res.createProduct.message, "error");
       }
@@ -148,8 +168,8 @@ const AddNewProduct: React.FC = () => {
       <Typography variant="h5" gutterBottom>
         Create Product
       </Typography>
-      <hr/>
-      <br/>
+      <hr />
+      <br />
       <form>
         <Grid container spacing={2}>
           {step === 0 && (
@@ -296,7 +316,9 @@ const AddNewProduct: React.FC = () => {
           {step === 4 && (
             <>
               <Grid item xs={12}>
-                <Typography variant="h5" gutterBottom>Summary</Typography>
+                <Typography variant="h5" gutterBottom>
+                  Summary
+                </Typography>
                 <div>Title : {formik.values.name}</div>
                 <div>Description : {formik.values.description}</div>
                 <div>Price : {formik.values.price}</div>

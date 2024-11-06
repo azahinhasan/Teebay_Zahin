@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery,useMutation } from "@apollo/client";
+import { useQuery, useMutation, useApolloClient } from "@apollo/client";
 import { GET_ALL_OWN_PRODUCTS } from "../../../graphql/queries/product.queries";
 import { DELETE_PRODUCT } from "../../../graphql/mutations/product.mutations";
 import {
@@ -21,6 +21,8 @@ const MyProductsPage: React.FC = () => {
   const [selectedProductId, setSelectedProductId] = useState<number>(0);
   const { refetchMyAllProduct, setRefetchMyAllProduct } = useProductContext();
   const navigate = useNavigate();
+  const client = useApolloClient();
+
   const { loading, error, data } = useQuery(GET_ALL_OWN_PRODUCTS, {
     fetchPolicy: refetchMyAllProduct ? "network-only" : "cache-first",
     onCompleted: () => {
@@ -32,6 +34,29 @@ const MyProductsPage: React.FC = () => {
     onCompleted: (res) => {
       if (res.deleteProduct.success) {
         showAlert(res.deleteProduct.message, "success");
+        const existingOwnProducts: any = client.readQuery({
+          query: GET_ALL_OWN_PRODUCTS,
+        });
+        console.log(existingOwnProducts)
+        if (existingOwnProducts) {
+          console.log(existingOwnProducts)
+          const updatedOwnProducts =
+            existingOwnProducts.getAllOwnProducts.list.filter(
+              (product: ProductInfoInterface) =>
+                product.id !== selectedProductId
+            );
+          console.log(updatedOwnProducts)
+          client.writeQuery({
+            query: GET_ALL_OWN_PRODUCTS,
+            data: {
+              getAllOwnProducts: {
+                ...existingOwnProducts.getAllOwnProducts,
+                list: updatedOwnProducts,
+              },
+            },
+          });
+        }
+        setSelectedProductId(0);
       } else {
         showAlert(res.deleteProduct.message, "error");
       }
@@ -48,11 +73,9 @@ const MyProductsPage: React.FC = () => {
   const products: ProductInfoInterface[] = data.getAllOwnProducts.list;
 
   const deleteHandler = (id: number) => {
-    console.log(id);
     deleteProduct({
       variables: { id },
     });
-    setSelectedProductId(0);
   };
 
   return (
