@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   Typography,
-  TextField,
   Button,
   CircularProgress,
 } from "@mui/material";
@@ -13,6 +12,7 @@ import Cookies from "js-cookie";
 import { LOGIN_MUTATION } from "../../graphql/mutations/auth.mutations";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../../context/snack-bar.context";
+import CustomFields from "../../components/CustomFields";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -71,23 +71,20 @@ const Login = () => {
             Login
           </Typography>
           <form onSubmit={formik.handleSubmit}>
-            <TextField
-              fullWidth
+            <CustomFields
               label="Email"
-              variant="outlined"
+              fullWidth
               {...formik.getFieldProps("email")}
               error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              margin="normal"
+              helperText={formik.errors.email}
             />
-            <TextField
+            <CustomFields
               fullWidth
               label="Password"
-              variant="outlined"
-              type="password"
+              fieldType="password"
               {...formik.getFieldProps("password")}
               error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              helperText={ formik.errors.password}
               margin="normal"
             />
             <br />

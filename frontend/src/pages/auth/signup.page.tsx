@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   Typography,
-  TextField,
   Button,
   CircularProgress,
 } from "@mui/material";
@@ -12,6 +11,7 @@ import * as Yup from "yup";
 import { CREATE_USER } from "../../graphql/mutations/user.mutations";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../../context/snack-bar.context";
+import CustomFields from "../../components/CustomFields";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const SignUp = () => {
       name: "",
       email: "",
       password: "",
-      confirmPassword: "", // New field
+      confirmPassword: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
@@ -81,47 +81,40 @@ const SignUp = () => {
             Sign Up
           </Typography>
           <form onSubmit={formik.handleSubmit}>
-            <TextField
-              fullWidth
+            <CustomFields
+              fieldType="text"
               label="Name"
-              variant="outlined"
+              fullWidth
               {...formik.getFieldProps("name")}
               error={formik.touched.name && Boolean(formik.errors.name)}
-              helperText={formik.touched.name && formik.errors.name}
+              helperText={formik.errors.name}
               margin="normal"
             />
-            <TextField
-              fullWidth
+            <CustomFields
+              fieldType="text"
               label="Email"
-              variant="outlined"
+              fullWidth
               {...formik.getFieldProps("email")}
               error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              helperText={formik.errors.email}
               margin="normal"
             />
-            <TextField
-              fullWidth
+            <CustomFields
+              fieldType="password"
               label="Password"
-              variant="outlined"
-              type="password"
+              fullWidth
               {...formik.getFieldProps("password")}
               error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              helperText={formik.errors.password}
               margin="normal"
             />
-            <TextField
-              fullWidth
+            <CustomFields
+              fieldType="password"
               label="Retype Password"
-              variant="outlined"
-              type="password"
+              fullWidth
               {...formik.getFieldProps("confirmPassword")}
-              error={
-                formik.touched.confirmPassword &&
-                Boolean(formik.errors.confirmPassword)
-              }
-              helperText={
-                formik.touched.confirmPassword && formik.errors.confirmPassword
-              }
+              error={Boolean(formik.errors.confirmPassword)}
+              helperText={formik.errors.confirmPassword}
               margin="normal"
             />
 
@@ -140,8 +133,8 @@ const SignUp = () => {
             >
               {loading ? <CircularProgress size={24} /> : "Sign Up"}
             </Button>
-            <br/>
-            <br/>
+            <br />
+            <br />
 
             <Button
               variant="outlined"

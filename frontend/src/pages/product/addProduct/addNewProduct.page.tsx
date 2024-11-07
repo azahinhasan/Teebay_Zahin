@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useApolloClient } from "@apollo/client";
 import {
@@ -7,10 +7,6 @@ import {
   Button,
   CircularProgress,
   Grid,
-  TextField,
-  MenuItem,
-  Select,
-  InputLabel,
   FormControl,
 } from "@mui/material";
 import { CREATE_PRODUCT } from "../../../graphql/mutations/product.mutations";
@@ -21,6 +17,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import YesNoDialog from "../../../components/YesNoDialog";
 import { GET_ALL_OWN_PRODUCTS } from "../../../graphql/queries/product.queries";
+import CustomFields from "../../../components/CustomFields";
 
 const AddNewProduct: React.FC = () => {
   const navigate = useNavigate();
@@ -30,13 +27,15 @@ const AddNewProduct: React.FC = () => {
   const [step, setStep] = useState(0);
   const client = useApolloClient();
 
-  const {
-    loading: categoriesLoading,
-    error: categoriesError,
-    data: categoriesData,
-  } = useQuery(GET_ALL_CATEGORIES, {
-    fetchPolicy: "cache-first",
-  });
+  const { loading: categoriesLoading, error: categoriesError } = useQuery(
+    GET_ALL_CATEGORIES,
+    {
+      fetchPolicy: "cache-first",
+      onCompleted: (res) => {
+        setCategories(res.getAllCategories.list);
+      },
+    }
+  );
 
   const [createProduct] = useMutation(CREATE_PRODUCT, {
     onCompleted: (res) => {
@@ -46,19 +45,22 @@ const AddNewProduct: React.FC = () => {
         const existingOwnProducts: any = client.readQuery({
           query: GET_ALL_OWN_PRODUCTS,
         });
-        const updatedOwnProducts = [
-          res.createProduct,
-          ...existingOwnProducts.getAllOwnProducts.list,
-        ];
-        client.writeQuery({
-          query: GET_ALL_OWN_PRODUCTS,
-          data: {
-            getAllOwnProducts: {
-              ...existingOwnProducts.getAllOwnProducts,
-              list: updatedOwnProducts,
+        if (existingOwnProducts) {
+          const updatedOwnProducts = [
+            res.createProduct,
+            ...existingOwnProducts.getAllOwnProducts.list,
+          ];
+          client.writeQuery({
+            query: GET_ALL_OWN_PRODUCTS,
+            data: {
+              getAllOwnProducts: {
+                ...existingOwnProducts.getAllOwnProducts,
+                list: updatedOwnProducts,
+              },
             },
-          },
-        });
+          });
+        }
+
         navigate("/my-products");
       } else {
         showAlert(res.createProduct.message, "error");
@@ -68,12 +70,6 @@ const AddNewProduct: React.FC = () => {
       showAlert(error.message, "error");
     },
   });
-
-  useEffect(() => {
-    if (categoriesData) {
-      setCategories(categoriesData.getAllCategories.list);
-    }
-  }, [categoriesData]);
 
   const formik = useFormik({
     initialValues: {
@@ -109,22 +105,16 @@ const AddNewProduct: React.FC = () => {
   };
 
   const handleNext = async () => {
-    const errors = await formik.validateForm();
     //formik.setTouched used to programmatically mark specific fields as touched, indicating user interaction for displaying validation errors.
+    const errors = await formik.validateForm();
     if (step === 0 && errors.name) {
-      formik.setTouched({
-        name: true,
-      });
+      formik.setTouched({ name: true });
       return;
     } else if (step === 1 && errors.categoryIds) {
-      formik.setTouched({
-        categoryIds: true,
-      });
+      formik.setTouched({ categoryIds: true });
       return;
     } else if (step === 2 && errors.description) {
-      formik.setTouched({
-        description: true,
-      });
+      formik.setTouched({ description: true });
       return;
     } else if (
       step === 3 &&
@@ -158,7 +148,7 @@ const AddNewProduct: React.FC = () => {
       <YesNoDialog
         open={dialogYesNoOpen}
         title="Confirm Create"
-        content="Are you sure you want to create this product?"
+        content="Are you sure you want to add this product?"
         onClose={() => setDialogYesNoOpen(false)}
         onConfirm={handleConfirmCreate}
       />
@@ -172,162 +162,131 @@ const AddNewProduct: React.FC = () => {
         <Grid container spacing={2}>
           {step === 0 && (
             <Grid item xs={12}>
-              <TextField
+              <CustomFields
                 fullWidth
-                variant="outlined"
+                fieldType="text"
                 label="Title"
                 name="name"
                 required
                 value={formik.values.name}
                 onChange={formik.handleChange}
                 error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
+                helperText={formik.errors.name}
               />
             </Grid>
           )}
           {step === 1 && (
             <Grid item xs={12}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>Categories</InputLabel>
-                <Select
-                  multiple
+              <FormControl margin="normal" fullWidth>
+                <CustomFields
+                  fieldType="dropdown"
                   label="Categories"
                   name="categoryIds"
-                  required
                   value={formik.values.categoryIds}
                   onChange={formik.handleChange}
                   error={
                     formik.touched.categoryIds &&
                     Boolean(formik.errors.categoryIds)
                   }
-                >
-                  {categories?.map((category) => (
-                    <MenuItem key={category.id} value={category.id}>
-                      {category.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {formik.touched.categoryIds && formik.errors.categoryIds && (
-                  <Typography color="error" variant="body2">
-                    {formik.errors.categoryIds}
-                  </Typography>
-                )}
+                  helperText={
+                    Array.isArray(formik.errors.categoryIds)
+                      ? formik.errors.categoryIds.join(", ")
+                      : formik.errors.categoryIds
+                  }
+                  options={categories.map((cat) => ({
+                    value: cat.id,
+                    label: cat.name,
+                  }))}
+                  SelectProps={{ multiple: true }}
+                />
               </FormControl>
             </Grid>
           )}
           {step === 2 && (
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                variant="outlined"
+              <CustomFields
+                fieldType="textarea"
                 label="Description"
                 name="description"
-                multiline
                 required
-                rows={4}
+                fullWidth
                 value={formik.values.description}
                 onChange={formik.handleChange}
                 error={
                   formik.touched.description &&
                   Boolean(formik.errors.description)
                 }
-                helperText={
-                  formik.touched.description && formik.errors.description
-                }
+                helperText={formik.errors.description}
               />
             </Grid>
           )}
           {step === 3 && (
             <>
               <Grid item xs={12}>
-                <TextField
+                <CustomFields
                   fullWidth
-                  variant="outlined"
                   label="Price"
                   name="price"
-                  type="number"
+                  fieldType="number"
                   required
                   value={formik.values.price}
                   onChange={formik.handleChange}
                   error={formik.touched.price && Boolean(formik.errors.price)}
-                  helperText={formik.touched.price && formik.errors.price}
+                  helperText={formik.errors.price}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
+                <CustomFields
                   fullWidth
-                  variant="outlined"
                   label="Rent Price"
                   name="rentPrice"
-                  type="number"
-                  required
+                  fieldType="number"
                   value={formik.values.rentPrice}
                   onChange={formik.handleChange}
                   error={
                     formik.touched.rentPrice && Boolean(formik.errors.rentPrice)
                   }
-                  helperText={
-                    formik.touched.rentPrice && formik.errors.rentPrice
-                  }
+                  helperText={formik.errors.rentPrice}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <FormControl
+                <CustomFields
+                  fieldType="dropdown"
+                  label="Rent Duration"
+                  name="rentDuration"
+                  required
                   fullWidth
-                  variant="outlined"
-                  margin="normal"
-                  sx={{ marginTop: "0px" }}
-                >
-                  <InputLabel>Rent Duration</InputLabel>
-                  <Select
-                    label="Rent Duration"
-                    name="rentDuration"
-                    value={formik.values.rentDuration}
-                    onChange={formik.handleChange}
-                    error={
-                      formik.touched.rentDuration &&
-                      Boolean(formik.errors.rentDuration)
-                    }
-                  >
-                    {[
-                      "perHour",
-                      "perDay",
-                      "perWeek",
-                      "perMonth",
-                      "perYear",
-                    ].map((duration) => (
-                      <MenuItem key={duration} value={duration}>
-                        {duration}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {formik.touched.rentDuration &&
-                    formik.errors.rentDuration && (
-                      <Typography color="error" variant="body2">
-                        {formik.errors.rentDuration ?? ""}
-                      </Typography>
-                    )}
-                </FormControl>
+                  value={formik.values.rentDuration}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.rentDuration &&
+                    Boolean(formik.errors.rentDuration)
+                  }
+                  helperText={formik.errors.rentDuration}
+                  options={[
+                    { value: "perHour", label: "perHour" },
+                    { value: "perDay", label: "perDay" },
+                    { value: "perWeek", label: "perWeek" },
+                    { value: "perMonth", label: "perMonth" },
+                    { value: "perYear", label: "perYear" },
+                  ]}
+                />
               </Grid>
             </>
           )}
           {step === 4 && (
-            <>
-              <Grid item xs={12}>
-                <Typography variant="h5" gutterBottom>
-                  Summary
-                </Typography>
-                <div>Title : {formik.values.name}</div>
-                <div>Description : {formik.values.description}</div>
-                <div>Price : {formik.values.price}</div>
-                <div>
-                  Rent Price : {formik.values.rentPrice}{" "}
-                  {formik.values.rentDuration}
-                </div>
-                {/* Category : {formik.values.categoryIds} */}
-              </Grid>
-              <Grid item xs={12}></Grid>
-            </>
+            <Grid item xs={12}>
+              <Typography variant="h5" gutterBottom>
+                Summary
+              </Typography>
+              <div>Title : {formik.values.name}</div>
+              <div>Description : {formik.values.description}</div>
+              <div>Price : {formik.values.price}</div>
+              <div>
+                Rent Price : {formik.values.rentPrice}{" "}
+                {formik.values.rentDuration}
+              </div>
+            </Grid>
           )}
         </Grid>
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
@@ -341,10 +300,10 @@ const AddNewProduct: React.FC = () => {
           ) : (
             <Button
               variant="contained"
-              color="primary"
-              onClick={() => formik.handleSubmit()}
+              color="success"
+              onClick={formik.handleSubmit as any}
             >
-              Submit
+              Create
             </Button>
           )}
         </Box>
