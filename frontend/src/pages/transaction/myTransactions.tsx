@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_USER_TRANSACTIONS } from "../../graphql/queries/transactions.queries";
-import ProductCard from "../../components/productCard";
+import ProductCard from "../../components/ProductCard";
 import {
   AppBar,
   Tabs,
