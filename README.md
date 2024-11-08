@@ -14,7 +14,7 @@ git clone https://github.com/azahinhasan/Teebay_Zahin.git
 ## Running the Project
 
 ### Option 1: Run with Docker (Recommended)
-Navigate to the project folder and run the following command:
+Navigate to the project folder and run the following command(make sure docker is running on the system):
 ```bash
 docker-compose up --build
 ```
@@ -23,6 +23,10 @@ or
 docker compose up --build
 ```
 Docker will handle all dependencies, including PostgreSQL and Node.js, making setup simpler.
+
+- The frontend will be accessible at `http://localhost:5179`.
+- The backend server will be accessible at `http://localhost:5010`.
+- The DB will be accessible at `http://localhost:5011`.
 
 ### Option 2: Run without Docker
 Ensure the following are installed:

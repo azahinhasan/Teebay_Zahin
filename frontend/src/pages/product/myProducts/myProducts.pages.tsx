@@ -10,7 +10,7 @@ import {
   Alert,
 } from "@mui/material";
 import { ProductInfoInterface } from "../../../common/interface";
-import ProductCard from "../../../components/ProductCard";
+import ProductCard from "../../../components/Product-Card";
 import { useProductContext } from "../../../context/product.context";
 import { useNavigate } from "react-router-dom";
 import YesNoDialog from "../../../components/YesNoDialog";

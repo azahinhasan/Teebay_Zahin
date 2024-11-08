@@ -4,9 +4,9 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: Teebay
+      POSTGRES_DB: Teebay_Zahin
     ports:
-      - "6010:5432"
+      - "5011:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: on-failure:2
@@ -20,7 +20,7 @@ services:
       - JWT_SECRET=xhpioafpe
       - APP_PORT=5010
       - JWT_EXPIRES_IN=20d
-      - DATABASE_URL=postgresql://postgres:1234@db:5432/Teebay?schema=public
+      - DATABASE_URL=postgresql://postgres:1234@db:5432/Teebay_Zahin?schema=public
     depends_on:
       - db
     restart: on-failure:2
