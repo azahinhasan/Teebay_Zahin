@@ -2,6 +2,7 @@ import { InputType,ObjectType, Field, Int } from '@nestjs/graphql';
 import { BaseResponse } from '../../common/dto/base-response.dto';
 import {GetUserInfo} from '../../user/dto/user.query.dto'
 import {GetCategoryInfo} from '../../category/dto/category.query.dto'
+import { GetTransactionInfo } from 'src/transaction/dto/transaction.query.dto';
 
 @ObjectType()
 export class GetProductInfo extends BaseResponse {
@@ -36,7 +37,11 @@ export class GetProductInfo extends BaseResponse {
   user?: GetUserInfo;
 
   @Field(() => [GetCategoryInfo], { nullable: true }) 
-  categories?: GetCategoryInfo[]; 
+  categories?: GetCategoryInfo[];
+
+  @Field(() => [GetTransactionInfo], { nullable: true }) 
+  transactions?: GetTransactionInfo[];
+
 }
 
 @ObjectType()

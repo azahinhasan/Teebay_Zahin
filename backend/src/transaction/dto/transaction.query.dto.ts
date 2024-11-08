@@ -23,7 +23,7 @@ export class GetTransactionInfo extends BaseResponse {
   @Field({ nullable: true })
   user?: GetUserInfo;
 
-  @Field({ nullable: true })
+  @Field(()=>GetProductInfo,{ nullable: true })
   product?: GetProductInfo;
 }
 

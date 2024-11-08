@@ -126,8 +126,8 @@ const MyProductsPage: React.FC = () => {
             }}
           >
             <Alert variant="outlined" severity="warning">
-              The product will only be displayed if it has no transaction
-              history.But can be found under my transaction.
+              The product will only be displayed if it is available.
+              And user will not able to delete if product has any transaction history.
             </Alert>
           </Box>
         </>

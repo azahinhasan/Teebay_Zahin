@@ -46,10 +46,15 @@ export class ProductService {
 
   async findAllOwnProducts(userId: number): Promise<GetProductsInfo> {
     const data = await this.prisma.product.findMany({
-      where: { userId, transactions: { none: {} } },
+      where: {
+        userId,
+        // status: 'available',
+        // transactions: { none: {} }
+      },
       include: {
         user: true,
         categories: true,
+        transactions: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -109,7 +114,7 @@ export class ProductService {
 
   async remove(id: number): Promise<GetProductInfo> {
     const transaction = await this.prisma.transaction.findFirst({
-      where: { id },
+      where: { productId:id },
     });
     if (transaction) {
       //only owner can remove products and can't remove products in if it has any transaction history

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_ALL_PRODUCTS = gql`
   query GetAllProducts {
@@ -28,8 +28,8 @@ export const GET_ALL_PRODUCTS = gql`
 `;
 
 export const GET_PRODUCT_BY_ID = gql`
-  query GetProduct($id: Float!,$isOwnProductCheck: Boolean!) {
-    getProduct(id: $id,isOwnProductCheck: $isOwnProductCheck) {
+  query GetProduct($id: Float!, $isOwnProductCheck: Boolean!) {
+    getProduct(id: $id, isOwnProductCheck: $isOwnProductCheck) {
       success
       message
       id
@@ -66,13 +66,12 @@ export const GET_ALL_OWN_PRODUCTS = gql`
         totalViews
         rentDuration
         status
-        user {
-          id
-          name
-        }
         categories {
           id
           name
+        }
+        transactions {
+          id
         }
       }
     }

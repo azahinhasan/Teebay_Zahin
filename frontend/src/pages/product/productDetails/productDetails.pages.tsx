@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
-import { Box, Typography, Button, CircularProgress, Grid } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  CircularProgress,
+  Grid,
+  Alert,
+} from "@mui/material";
 import { GET_PRODUCT_BY_ID } from "../../../graphql/queries/product.queries";
 import {
   BUY_PRODUCT,
@@ -18,7 +25,7 @@ const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { showAlert } = useSnackbar();
-  const { setRefetchAllProduct,setRefetchTransaction } = useProductContext();
+  const { setRefetchAllProduct, setRefetchTransaction } = useProductContext();
   const [dialogYesNoOpen, setDialogYesNoOpen] = useState(false);
   const [dialogRentOpen, setDialogRentOpen] = useState(false);
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
@@ -93,7 +100,7 @@ const ProductDetails: React.FC = () => {
         padding: 3,
         maxWidth: 600,
         margin: "10px auto",
-        border: { xs: "none", sm: "1px solid lightgray"},
+        border: { xs: "none", sm: "1px solid lightgray" },
         textAlign: "left",
       }}
     >
@@ -143,7 +150,7 @@ const ProductDetails: React.FC = () => {
           </Grid>
 
           <Grid item sm={12} md={10}>
-            {product.status === "available" && (
+            {product.status === "available" ? (
               <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end" }}>
                 <Button
                   variant="contained"
@@ -160,6 +167,13 @@ const ProductDetails: React.FC = () => {
                   Rent
                 </Button>
               </Box>
+            ) : (
+              <Alert
+                severity="error"
+                style={{ maxWidth: "280px", color:'red',margin: "auto 0px 0 auto" }}
+              >
+                Not available for buy or rent{" "}
+              </Alert>
             )}
           </Grid>
         </Grid>

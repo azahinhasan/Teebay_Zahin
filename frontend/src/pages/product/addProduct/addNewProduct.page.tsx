@@ -37,6 +37,8 @@ const AddNewProduct: React.FC = () => {
     }
   );
 
+
+
   const [createProduct] = useMutation(CREATE_PRODUCT, {
     onCompleted: (res) => {
       if (res.createProduct.success) {
@@ -44,12 +46,32 @@ const AddNewProduct: React.FC = () => {
 
         const existingOwnProducts: any = client.readQuery({
           query: GET_ALL_OWN_PRODUCTS,
+          
         });
+
         if (existingOwnProducts) {
+
+          const transformData = (data:any) => {
+            return {
+              __typename: data.__typename,
+              id: data.id,
+              name: data.name,
+              description: data.description,
+              price: data.price,
+              rentPrice: data.rentPrice,
+              totalViews: data.totalViews,
+              rentDuration: data.rentDuration,
+              status: data.status,
+              categories: data.categories,
+              transactions: []
+            };
+          };
+
           const updatedOwnProducts = [
-            res.createProduct,
+            transformData(res.createProduct),
             ...existingOwnProducts.getAllOwnProducts.list,
           ];
+          console.log(updatedOwnProducts)
           client.writeQuery({
             query: GET_ALL_OWN_PRODUCTS,
             data: {
@@ -130,6 +152,13 @@ const AddNewProduct: React.FC = () => {
     setStep(step + 1);
   };
 
+  const getCategoryNamesById = () => {
+    const temp = categories.filter((el) =>
+      formik.values.categoryIds.includes(el.id)
+    );
+    return temp.map((el) => el.name).join(", ");
+  };
+
   const handleBack = () => setStep(step - 1);
 
   if (categoriesLoading) return <CircularProgress />;
@@ -140,7 +169,7 @@ const AddNewProduct: React.FC = () => {
       sx={{
         padding: 1.5,
         maxWidth: { xs: 1000, md: 600 },
-        margin: "auto",
+        margin: "5px auto",
         border: { xs: "none", md: "1px solid lightgray" },
         textAlign: "left",
       }}
@@ -280,10 +309,11 @@ const AddNewProduct: React.FC = () => {
                 Summary
               </Typography>
               <div>Title : {formik.values.name}</div>
+              <div>Categories : {getCategoryNamesById()}</div>
               <div>Description : {formik.values.description}</div>
-              <div>Price : {formik.values.price}</div>
+              <div>Price : ${formik.values.price}</div>
               <div>
-                Rent Price : {formik.values.rentPrice}{" "}
+                Rent Price : ${formik.values.rentPrice}{" "}
                 {formik.values.rentDuration}
               </div>
             </Grid>

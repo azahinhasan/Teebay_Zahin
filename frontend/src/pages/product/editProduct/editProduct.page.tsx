@@ -24,7 +24,7 @@ const EditProduct: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { showAlert } = useSnackbar();
-  const { setRefetchAllProduct } = useProductContext();
+  const { setRefetchAllProduct,setRefetchMyAllProduct } = useProductContext();
   const [dialogYesNoOpen, setDialogYesNoOpen] = useState(false);
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
 
@@ -71,6 +71,7 @@ const EditProduct: React.FC = () => {
         showAlert(res.updateProduct.message, "success");
         navigate("/my-products");
         setRefetchAllProduct(true);
+        setRefetchMyAllProduct(true);
       } else {
         showAlert(res.updateProduct.message, "error");
       }

@@ -4,6 +4,7 @@
 
 - Nest js
 - React js
+- TypeScript
 - GraphQL
 - Material UI
 - Prisma
@@ -17,14 +18,16 @@
 ############ Auth ############
 
 # GraphQL Mutation: Login
-## Before that run mutation of createUser
+## 
 mutation Login {
-  login(email: "johndoe@example.com", password: "securePassword123") {
+  login(email: "test@example.com", password: "test123") {
     success
     message
     token
   }
 }
+
+# [⭕Note: Before login run mutation of createUser. Make make sure passing token into header for all queries and mutation except createUser.]
 
 ############ User ############
 
@@ -54,7 +57,7 @@ query FindUserById {
 
 # Mutation: Create User
 mutation CreateUser {
-  createUser(input: { name: "Test_user", email: "Test_user@example.com", password: "Test_user" }) {
+  createUser(input: { name: "Test_user", email: "test@example.com", password: "test123" }) {
     success
     message
     id

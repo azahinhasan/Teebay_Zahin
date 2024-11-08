@@ -12,6 +12,7 @@ export interface ProductInfoInterface{
   message: string;
   success: boolean;
   categories: CategoryInterface[]
+  transactions: TransactionInterface[]
 }
 
 export interface CategoryInterface{

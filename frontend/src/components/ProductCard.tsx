@@ -54,16 +54,17 @@ const ProductCard: React.FC<{
                     display: "flex",
                   }}
                 >
-                  <EditNoteIcon
+                  {el.status==="available"&&<EditNoteIcon
                     style={{ color: "#1976D2",cursor: "pointer" }}
                     onClick={() => navigate(`/product/edit/${el.id}`)}
-                  />
-                  <DeleteForeverIcon
+                  />}
+
+                  {el.transactions.length<=0&&<DeleteForeverIcon
                     style={{ color: "red",cursor: "pointer" }}
                     onClick={() => {
                       onDelete && onDelete(el.id);
                     }}
-                  />
+                  />}
                 </Box>
               )}
               <Typography variant="h6">{el.name}</Typography>

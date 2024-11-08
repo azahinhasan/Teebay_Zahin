@@ -55,7 +55,7 @@ function generateRandomTransactions(num, users, products) {
       productIndex = Math.floor(Math.random() * products.length)+1;
     } while (
       Math.floor(Math.random() * 10) + 1 ===
-      products[productIndex].userId
+      products[productIndex]?.userId
     );
 
     transactions.push({
@@ -104,6 +104,26 @@ async function main() {
   await prisma.product.createMany({
     data: products,
   });
+
+  const createdProducts = await prisma.product.findMany();
+
+  const categoryLinks = [];
+  for (const product of createdProducts) {
+      categoryLinks.push({
+        A:  Math.floor(Math.random() * 3) + 1,
+        B: product.id, 
+      });
+      categoryLinks.push({
+        A:  Math.floor(Math.random() * 2) + 4,
+        B: product.id, 
+      });
+  }
+
+  for (const link of categoryLinks) {
+    await prisma.$executeRaw`INSERT INTO "_CategoryToProduct" ("A", "B") VALUES (${link.A}, ${link.B})`;
+  }
+
+
   const transactions = generateRandomTransactions(
     30,
     createdUsers,
