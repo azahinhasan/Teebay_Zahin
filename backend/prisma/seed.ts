@@ -22,13 +22,17 @@ async function generateRandomUsers(num) {
 // Function to generate random product data
 function generateRandomProducts(num, users) {
   const products = [];
-
+   const dumyDes = `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the 
+   industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a 
+   type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+   It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum`
   for (let i = 0; i < num; i++) {
     const userIndex = Math.floor(Math.random() * users.length);
     products.push({
       userId: Math.floor(Math.random() * 10) + 1,
       name: `Product ${i + 1}`,
-      description: `Description for product ${i + 1}`,
+      description: (i+1)%2===0?dumyDes:`Description for product ${i + 1}`,
       price: parseFloat((Math.random() * 100).toFixed(2)),
       rentPrice: parseFloat((Math.random() * 50).toFixed(2)),
       totalViews: Math.floor(Math.random() * 100),

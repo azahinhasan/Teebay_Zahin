@@ -34,7 +34,7 @@ const MyTransactions = () => {
     <Alert
       variant="outlined"
       severity="info"
-      style={{ width: "250px", margin: "10px auto" }}
+      style={{ maxWidth: "280px", margin: "10px auto" }}
     >
       {text}
     </Alert>

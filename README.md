@@ -53,7 +53,7 @@ Ensure the following are installed:
       npm install
       npm run dev
       ```
-      The frontend will be accessible at `http://localhost:5179`.
+      The frontend will be accessible at `http://localhost:5180`.
 
 ---
 

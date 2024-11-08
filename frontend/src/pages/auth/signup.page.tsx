@@ -113,7 +113,7 @@ const SignUp = () => {
               label="Retype Password"
               fullWidth
               {...formik.getFieldProps("confirmPassword")}
-              error={Boolean(formik.errors.confirmPassword)}
+              error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
               helperText={formik.errors.confirmPassword}
               margin="normal"
             />
