@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { GET_ALL_PRODUCTS } from "../../../graphql/queries/product.queries";
 import { CircularProgress, Typography,Box } from "@mui/material";
 import { ProductInfoInterface } from "../../../common/interface";
-import ProductCard from "../../../components/Product-Card";
+import ProductCard from "../../../components/ProductCard";
 import { useProductContext } from "../../../context/product.context";
 
 const AllProductsPage: React.FC = () => {

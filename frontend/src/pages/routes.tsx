@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import NavBar from "../components/Nav-Bar";
+import NavBar from "../components/NavBar";
 import Login from "./auth/login.page";
 import SignUp from "./auth/signup.page";
 import Cookies from "js-cookie";
